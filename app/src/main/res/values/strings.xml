@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">CommonBase</string>
+    <string name="show_gallery">Show Gallery</string>
+    <string name="add_log">Add Log</string>
+    <string name="show_article_feed">Show Article Feed</string>
+    <string name="add_image">Add Image</string>
+    <string name="clear_content">Clear Content</string>
+</resources>

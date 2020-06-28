@@ -1,0 +1,3 @@
+rootProject.name='CommonBase'
+include ':app'
+include ':lib'

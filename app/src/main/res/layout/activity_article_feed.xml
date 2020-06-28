@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btn_add_log"
+        style="@style/BaseIndexButton"
+        android:text="@string/add_log" />
+
+    <Button
+        android:id="@+id/btn_add_image"
+        style="@style/BaseIndexButton"
+        android:text="@string/add_image" />
+
+    <Button
+        android:id="@+id/btn_clear_content"
+        style="@style/BaseIndexButton"
+        android:text="@string/clear_content" />
+
+    <com.qiu.base.lib.widget.recycler.BaseRecyclerView
+        android:id="@+id/article_feed_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
