@@ -8,6 +8,7 @@ import android.view.View;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerAdapter;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerView;
 import com.qiu.base.sample.R;
+import com.qiu.base.sample.ui.article.db.ArticleDataBaseHelper;
 import com.qiu.base.sample.ui.article.widget.ArticleFeedSection;
 
 import androidx.annotation.NonNull;
@@ -18,8 +19,10 @@ public class ArticleFeedActivity extends Activity {
 
     @Nullable
     private BaseRecyclerView mRecyclerView;
-    @NonNull
+    @Nullable
     private ArticleFeedSection mSection;
+    @Nullable
+    private ArticleDataBaseHelper mDataBaseHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,6 +30,14 @@ public class ArticleFeedActivity extends Activity {
         setContentView(R.layout.activity_article_feed);
 
         mSection = new ArticleFeedSection();
+        mDataBaseHelper = new ArticleDataBaseHelper(this);
+        prepareRecyclerView();
+    }
+
+    private void prepareRecyclerView() {
+        if (mSection == null) {
+            return;
+        }
         findViewById(R.id.btn_add_log).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,5 +61,8 @@ public class ArticleFeedActivity extends Activity {
         mRecyclerView = findViewById(R.id.article_feed_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(new BaseRecyclerAdapter(mSection));
+    }
+
+    private void createDataBase() {
     }
 }
