@@ -11,12 +11,24 @@ public abstract class BaseRecyclerSection {
     @NonNull
     protected final ListEntry<BaseRecyclerItem> mListEntry = new ListEntry<>();
 
-    void setDataChangeListener(@NonNull ListEntry.ListChangeListener listener) {
+    public void setDataChangeListener(@NonNull ListEntry.ListChangeListener listener) {
         mListEntry.setListener(listener);
     }
 
+    int getItemCount() {
+        return getItems().size();
+    }
+
+    int getItemType(int position) {
+        return getItems().get(position).getId();
+    }
+
+    BaseRecyclerItem getItem(int position) {
+        return getItems().get(position);
+    }
+
     @NonNull
-    List<BaseRecyclerItem> getItems() {
+    protected List<BaseRecyclerItem> getItems() {
         return mListEntry.getList();
     }
 

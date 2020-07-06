@@ -33,7 +33,7 @@ public class BaseRecyclerAdapter extends RecyclerView.Adapter
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof BaseRecyclerViewHolder) {
-            final BaseRecyclerItem item = mSection.getItems().get(position);
+            final BaseRecyclerItem item = mSection.getItem(position);
             ((BaseRecyclerViewHolder) holder).onBind(item);
         }
     }
@@ -47,12 +47,12 @@ public class BaseRecyclerAdapter extends RecyclerView.Adapter
 
     @Override
     public int getItemCount() {
-        return mSection.getItems().size();
+        return mSection.getItemCount();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return mSection.getItems().get(position).getId();
+        return mSection.getItemType(position);
     }
 
     @Override

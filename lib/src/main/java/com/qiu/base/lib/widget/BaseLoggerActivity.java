@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.qiu.base.lib.data.ListEntry;
 import com.qiu.base.lib.widget.logger.LoggerFeedSection;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerAdapter;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerView;
@@ -24,8 +25,17 @@ public abstract class BaseLoggerActivity extends BaseActivity {
 
     private void prepareLoggerView() {
         final BaseRecyclerView loggerView = getLoggerView();
+        final BaseRecyclerAdapter adapter = new BaseRecyclerAdapter(mSection);
         loggerView.setLayoutManager(new LinearLayoutManager(this));
-        loggerView.setAdapter(new BaseRecyclerAdapter(mSection));
+        loggerView.setAdapter(adapter);
+        if (isAutoScroll()) {
+            mSection.setDataChangeListener(new ListEntry.ListChangeListener() {
+                @Override
+                public void onListChanged() {
+                    loggerView.scrollToPosition(adapter.getItemCount() - 1);
+                }
+            });
+        }
     }
 
     @Override
@@ -48,6 +58,10 @@ public abstract class BaseLoggerActivity extends BaseActivity {
 
     @NonNull
     protected abstract BaseRecyclerView getLoggerView();
+
+    protected boolean isAutoScroll() {
+        return true;
+    }
 
     protected final void addLog(@NonNull String log) {
         mSection.addLog(log);
