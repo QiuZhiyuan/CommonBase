@@ -8,7 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 
-import com.qiu.base.lib.inter.CallBack;
+import com.qiu.base.lib.inter.Callback;
 import com.qiu.base.lib.tools.UtilTools;
 
 import java.util.ArrayList;
@@ -63,10 +63,10 @@ public class SystemStateManager {
     };
 
     @NonNull
-    private final List<CallBack> mCallBackList = new ArrayList<>();
+    private final List<Callback> mCallbackList = new ArrayList<>();
 
     @NonNull
-    private final List<CallBack<NetState>> mNetStateCallBack = new ArrayList<>();
+    private final List<Callback<NetState>> mNetStateCallback = new ArrayList<>();
 
     private SystemStateManager() {
 
@@ -88,17 +88,17 @@ public class SystemStateManager {
         context.unregisterReceiver(mNetStateReceiver);
     }
 
-    public void registerNetStateListener(@NonNull CallBack<NetState> callBack) {
-        mNetStateCallBack.add(callBack);
+    public void registerNetStateListener(@NonNull Callback<NetState> callback) {
+        mNetStateCallback.add(callback);
     }
 
-    public void unregisterNetStateListener(@NonNull CallBack<NetState> callBack) {
-        mNetStateCallBack.remove(callBack);
+    public void unregisterNetStateListener(@NonNull Callback<NetState> callback) {
+        mNetStateCallback.remove(callback);
     }
 
     private void onNetStateChanged(int type, @NonNull String typeName) {
-        for (CallBack<NetState> callBack : mNetStateCallBack) {
-            callBack.onCall(new NetState(type, typeName));
+        for (Callback<NetState> callBack : mNetStateCallback) {
+            callBack.callback(new NetState(type, typeName));
         }
     }
 

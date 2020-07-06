@@ -2,7 +2,7 @@ package com.qiu.base.sample.ui;
 
 import android.os.Bundle;
 
-import com.qiu.base.lib.inter.CallBack;
+import com.qiu.base.lib.inter.Callback;
 import com.qiu.base.lib.tools.sys.SystemStateManager;
 import com.qiu.base.lib.widget.BaseLoggerActivity;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerView;
@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class SystemStateActivity extends BaseLoggerActivity implements
-        CallBack<SystemStateManager.NetState> {
+        Callback<SystemStateManager.NetState> {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class SystemStateActivity extends BaseLoggerActivity implements
     }
 
     @Override
-    public void onCall(SystemStateManager.NetState netState) {
+    public void callback(SystemStateManager.NetState netState) {
         addLog("NetWork state change Name : " + netState.typeName + " type : "
                 + netState.type);
     }
