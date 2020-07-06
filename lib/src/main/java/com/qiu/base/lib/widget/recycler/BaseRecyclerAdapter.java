@@ -21,7 +21,13 @@ public class BaseRecyclerAdapter extends RecyclerView.Adapter
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return mSection.getViewHolderFactory().createViewHolder(parent, viewType);
+        RecyclerView.ViewHolder viewHolder =
+                mSection.getViewHolderFactory().createViewHolder(parent, viewType);
+        if (viewHolder != null) {
+            return viewHolder;
+        } else {
+            return new SimpleViewHolder(parent.getContext());
+        }
     }
 
     @Override

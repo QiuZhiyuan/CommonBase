@@ -5,4 +5,7 @@
     <string name="show_article_feed">Show Article Feed</string>
     <string name="add_image">Add Image</string>
     <string name="clear_content">Clear Content</string>
+    <string name="start_one_pixel">Start One Pixel</string>
+    <string name="show_keep_alive">Show Keep Alive</string>
+    <string name="show_system_state_listener">Show System State Listener</string>
 </resources>

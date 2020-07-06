@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/index_button_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -17,5 +18,15 @@
             android:id="@+id/show_article_feed"
             style="@style/BaseIndexButton"
             android:text="@string/show_article_feed" />
+
+        <Button
+            android:id="@+id/show_keep_alive"
+            style="@style/BaseIndexButton"
+            android:text="@string/show_keep_alive" />
+
+        <Button
+            android:id="@+id/show_system_state_listener"
+            style="@style/BaseIndexButton"
+            android:text="@string/show_system_state_listener" />
     </LinearLayout>
 </ScrollView>

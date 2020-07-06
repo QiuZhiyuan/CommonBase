@@ -4,6 +4,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import com.qiu.base.lib.tools.UtilTools;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -12,7 +14,7 @@ import androidx.annotation.Nullable;
 
 public class ThreadUtils {
 
-    private static final int MSG_POST_MAIN_THREAD = 100;
+    private static final int MSG_POST_SINGLE_THREAD = 100;
     private static final int MSG_POST_ASYNC_THREAD = 101;
 
     @Nullable
@@ -40,14 +42,20 @@ public class ThreadUtils {
         }
 
         @NonNull
+        private final ExecutorService mCachedThreadExecutor = Executors.newCachedThreadPool();
+        @NonNull
         private final ExecutorService mSingleThreadExecutor = Executors.newSingleThreadExecutor();
 
         @Override
         public void handleMessage(@NonNull Message msg) {
             switch (msg.what) {
                 case MSG_POST_ASYNC_THREAD:
-                    final Runnable task = (Runnable) msg.obj;
-                    mSingleThreadExecutor.submit(task);
+                    final Runnable taskCache = (Runnable) msg.obj;
+                    mCachedThreadExecutor.submit(taskCache);
+                    break;
+                case MSG_POST_SINGLE_THREAD:
+                    final Runnable taskSingle = (Runnable) msg.obj;
+                    mSingleThreadExecutor.submit(taskSingle);
                     break;
                 default:
                     break;
@@ -60,6 +68,13 @@ public class ThreadUtils {
             msg.obj = runnable;
             sendMessageDelayed(msg, delay);
         }
+
+        void postSingleAsync(@NonNull Runnable runnable, long delay) {
+            Message msg = obtainMessage();
+            msg.what = MSG_POST_SINGLE_THREAD;
+            msg.obj = runnable;
+            sendMessageDelayed(msg, delay);
+        }
     }
 
     @NonNull
@@ -69,8 +84,17 @@ public class ThreadUtils {
     }
 
     public void postTask(@NonNull Runnable runnable, long delay, boolean isAsync) {
+        postTask(runnable, delay, isAsync, false);
+    }
+
+    public void postTask(@NonNull Runnable runnable, long delay, boolean isAsync,
+            boolean isSingle) {
         if (isAsync) {
-            mMainHandler.postAsync(runnable, delay);
+            if (isSingle) {
+                mMainHandler.postSingleAsync(runnable, delay);
+            } else {
+                mMainHandler.postAsync(runnable, delay);
+            }
         } else {
             mMainHandler.postDelayed(runnable, delay);
         }

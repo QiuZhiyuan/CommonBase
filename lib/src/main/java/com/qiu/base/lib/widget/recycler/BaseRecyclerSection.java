@@ -8,16 +8,15 @@ import androidx.annotation.NonNull;
 
 public abstract class BaseRecyclerSection {
 
-
     @NonNull
     protected final ListEntry<BaseRecyclerItem> mListEntry = new ListEntry<>();
 
-    public void setDataChangeListener(@NonNull ListEntry.ListChangeListener listener) {
+    void setDataChangeListener(@NonNull ListEntry.ListChangeListener listener) {
         mListEntry.setListener(listener);
     }
 
     @NonNull
-    public List<BaseRecyclerItem> getItems() {
+    List<BaseRecyclerItem> getItems() {
         return mListEntry.getList();
     }
 

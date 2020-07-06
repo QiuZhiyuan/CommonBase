@@ -6,10 +6,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public abstract class ViewHolderFactory {
 
-    @NonNull
+    @Nullable
     public abstract BaseRecyclerViewHolder createViewHolder(@NonNull ViewGroup parent,
             int viewType);
 
