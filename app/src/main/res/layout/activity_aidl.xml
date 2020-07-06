@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/index_button_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/start_aidl_service"
+        style="@style/BaseIndexButton"
+        android:text="@string/start_aidl_service" />
+
+    <Button
+        android:id="@+id/set_name"
+        style="@style/BaseIndexButton"
+        android:text="@string/set_name" />
+
+    <Button
+        android:id="@+id/get_name"
+        style="@style/BaseIndexButton"
+        android:text="@string/get_name" />
+
+    <com.qiu.base.lib.widget.recycler.BaseRecyclerView
+        android:id="@+id/aidl_logger"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

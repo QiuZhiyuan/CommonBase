@@ -28,5 +28,10 @@
             android:id="@+id/show_system_state_listener"
             style="@style/BaseIndexButton"
             android:text="@string/show_system_state_listener" />
+
+        <Button
+            android:id="@+id/show_aidl_receiver"
+            style="@style/BaseIndexButton"
+            android:text="@string/show_aidl_receiver" />
     </LinearLayout>
 </ScrollView>

@@ -1,5 +1,6 @@
 package com.qiu.base.lib.tools;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
@@ -34,5 +35,9 @@ public class UtilTools {
         } else {
             return (str1 == str2) || (str1 != null && str1.equals(str2));
         }
+    }
+
+    public static int getPid() {
+        return android.os.Process.myPid();
     }
 }

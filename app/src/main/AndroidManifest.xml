@@ -20,6 +20,11 @@
         <activity android:name=".ui.article.ArticleFeedActivity" />
         <activity android:name=".ui.KeepAliveActivity" />
         <activity android:name=".ui.SystemStateActivity" />
+        <activity android:name=".aidl.AidlReceiverActivity" />
+
+        <service
+            android:name=".aidl.AIDLService"
+            android:process="com.qiu.aidl.service" />
 
     </application>
 </manifest>
