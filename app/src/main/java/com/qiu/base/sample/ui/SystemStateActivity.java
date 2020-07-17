@@ -1,32 +1,31 @@
 package com.qiu.base.sample.ui;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 
 import com.qiu.base.lib.inter.Callback;
 import com.qiu.base.lib.tools.sys.SystemStateManager;
-import com.qiu.base.lib.widget.BaseLoggerActivity;
-import com.qiu.base.lib.widget.recycler.BaseRecyclerView;
-import com.qiu.base.sample.R;
+import com.qiu.base.lib.widget.logger.CommonLoggerActivity;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class SystemStateActivity extends BaseLoggerActivity implements
+public class SystemStateActivity extends CommonLoggerActivity implements
         Callback<SystemStateManager.NetState> {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_system_state);
-
-        SystemStateManager.i().startListenNetState(this);
-        SystemStateManager.i().registerNetStateListener(this);
+        startListenNetworkChange();
+        showScreenParams();
     }
 
-    @NonNull
+    @Nullable
     @Override
-    protected BaseRecyclerView getLoggerView() {
-        return findViewById(R.id.system_state_logger);
+    protected List<BtnEntry> createBtnEntryList() {
+        return null;
     }
 
     @Override
@@ -40,5 +39,21 @@ public class SystemStateActivity extends BaseLoggerActivity implements
     public void callback(SystemStateManager.NetState netState) {
         addLog("NetWork state change Name : " + netState.typeName + " type : "
                 + netState.type);
+    }
+
+    private void startListenNetworkChange() {
+        SystemStateManager.i().startListenNetState(this);
+        SystemStateManager.i().registerNetStateListener(this);
+    }
+
+    private void showScreenParams() {
+        addLog("show screen params:");
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        addLog("xdpi: " + metrics.xdpi);
+        addLog("ydpi: " + metrics.ydpi);
+        addLog("densityDpi: " + metrics.densityDpi);
+        addLog("widthPixels: " + metrics.widthPixels);
+        addLog("heightPixels: " + metrics.heightPixels);
+        addLog("density:" + metrics.density);
     }
 }

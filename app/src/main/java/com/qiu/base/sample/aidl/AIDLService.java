@@ -24,7 +24,7 @@ public class AIDLService extends Service {
 
         @Override
         public String getName() {
-            return name+" Pid : "+ UtilTools.getPid();
+            return name + " Pid : " + UtilTools.getPid();
         }
     };
 

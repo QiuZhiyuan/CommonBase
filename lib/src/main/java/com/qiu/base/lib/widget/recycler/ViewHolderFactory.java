@@ -15,9 +15,8 @@ public abstract class ViewHolderFactory {
             int viewType);
 
     @NonNull
-    protected View findViewById(@NonNull ViewGroup parent, @LayoutRes int id) {
+    protected View getLayoutById(@NonNull ViewGroup parent, @LayoutRes int id) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         return inflater.inflate(id, parent, false);
     }
-
 }

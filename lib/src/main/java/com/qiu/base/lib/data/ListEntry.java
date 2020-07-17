@@ -2,6 +2,7 @@ package com.qiu.base.lib.data;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,11 @@ public class ListEntry<T> {
         if (mListener != null) {
             mListener.onListChanged();
         }
+    }
+
+    @NonNull
+    public Iterator<T> getIterator() {
+        return mList.iterator();
     }
 
     public void add(@NonNull T item) {

@@ -21,6 +21,7 @@
         <activity android:name=".ui.KeepAliveActivity" />
         <activity android:name=".ui.SystemStateActivity" />
         <activity android:name=".aidl.AidlReceiverActivity" />
+        <activity android:name=".editable.EditableActivity" />
 
         <service
             android:name=".aidl.AIDLService"

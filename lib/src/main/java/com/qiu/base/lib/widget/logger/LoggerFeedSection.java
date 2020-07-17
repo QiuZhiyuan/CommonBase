@@ -21,7 +21,7 @@ public class LoggerFeedSection extends BaseRecyclerSection {
         @Override
         public BaseRecyclerViewHolder createViewHolder(@NonNull ViewGroup parent, int viewType) {
             if (viewType == TEXT_ITEM_ID) {
-                final View view = findViewById(parent, R.layout.logger_item);
+                final View view = getLayoutById(parent, R.layout.logger_item);
                 return new LoggerTextViewHolder(view);
             } else {
                 throw new RuntimeException();

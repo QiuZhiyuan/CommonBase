@@ -7,19 +7,18 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 
 import com.qiu.base.IPerson;
 import com.qiu.base.lib.tools.UtilTools;
-import com.qiu.base.lib.widget.BaseLoggerActivity;
-import com.qiu.base.lib.widget.recycler.BaseRecyclerView;
-import com.qiu.base.sample.R;
+import com.qiu.base.lib.widget.logger.CommonLoggerActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class AidlReceiverActivity extends BaseLoggerActivity implements View.OnClickListener {
+public class AidlReceiverActivity extends CommonLoggerActivity {
 
     @NonNull
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -42,44 +41,39 @@ public class AidlReceiverActivity extends BaseLoggerActivity implements View.OnC
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_aidl);
-
-        LinearLayout mButtonContainer = findViewById(R.id.index_button_container);
-        for (int i = 0; i < mButtonContainer.getChildCount(); i++) {
-            View view = mButtonContainer.getChildAt(i);
-            if (view instanceof Button) {
-                view.setOnClickListener(this);
-            }
-        }
         addLog("Pid : " + UtilTools.getPid());
+    }
+
+    @Nullable
+    @Override
+    protected List<BtnEntry> createBtnEntryList() {
+        final List<BtnEntry> entryList = new ArrayList<>();
+        entryList.add(new BtnEntry("Start AIDL Service", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bindAidlService();
+            }
+        }));
+        entryList.add(new BtnEntry("Set Name", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setName("Set name count : " + mSetNameCount++);
+            }
+        }));
+        entryList.add(new BtnEntry("Get Name", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                printName();
+            }
+        }));
+
+        return entryList;
     }
 
     @Override
     protected void onDestroy() {
         unbindService(mServiceConnection);
         super.onDestroy();
-    }
-
-    @NonNull
-    @Override
-    protected BaseRecyclerView getLoggerView() {
-        return findViewById(R.id.aidl_logger);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.start_aidl_service:
-                bindAidlService();
-                break;
-            case R.id.set_name:
-                setName("Set name count : " + mSetNameCount++);
-                break;
-            case R.id.get_name:
-                printName();
-            default:
-                break;
-        }
     }
 
     private void setName(@NonNull String name) {

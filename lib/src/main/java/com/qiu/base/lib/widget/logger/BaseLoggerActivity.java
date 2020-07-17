@@ -1,10 +1,11 @@
-package com.qiu.base.lib.widget;
+package com.qiu.base.lib.widget.logger;
 
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.qiu.base.lib.data.ListEntry;
+import com.qiu.base.lib.widget.BaseActivity;
 import com.qiu.base.lib.widget.logger.LoggerFeedSection;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerAdapter;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerView;

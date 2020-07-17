@@ -9,9 +9,8 @@ import com.qiu.base.lib.widget.recycler.BaseRecyclerAdapter;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerView;
 import com.qiu.base.sample.R;
 import com.qiu.base.sample.ui.article.db.ArticleDataBaseHelper;
-import com.qiu.base.sample.ui.article.widget.ArticleFeedSection;
+import com.qiu.base.sample.ui.article.adapter.ArticleFeedSection;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 

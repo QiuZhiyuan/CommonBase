@@ -1,4 +1,4 @@
-package com.qiu.base.sample.ui.article.widget;
+package com.qiu.base.sample.ui.article.adapter;
 
 import android.view.View;
 import android.widget.ImageView;

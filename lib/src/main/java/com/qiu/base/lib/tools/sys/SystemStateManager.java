@@ -63,9 +63,6 @@ public class SystemStateManager {
     };
 
     @NonNull
-    private final List<Callback> mCallbackList = new ArrayList<>();
-
-    @NonNull
     private final List<Callback<NetState>> mNetStateCallback = new ArrayList<>();
 
     private SystemStateManager() {
@@ -101,15 +98,4 @@ public class SystemStateManager {
             callBack.callback(new NetState(type, typeName));
         }
     }
-
-//    public boolean requestUserPermission() {
-//        return true;
-//    }
-//
-//    public boolean checkPermission(@NonNull Context context, @NonNull String permission) {
-//        final int state = ContextCompat.checkSelfPermission(context, permission);
-//        switch (state) {
-//            case
-//        }
-//    }
 }
