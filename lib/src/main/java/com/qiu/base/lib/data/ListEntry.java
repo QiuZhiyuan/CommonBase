@@ -2,6 +2,7 @@ package com.qiu.base.lib.data;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -77,6 +78,10 @@ public class ListEntry<T> {
         T result = mList.remove(index);
         callListChanged();
         return result;
+    }
+
+    public boolean contains(@NonNull T t) {
+        return mList.contains(t);
     }
 
     public void clear() {
