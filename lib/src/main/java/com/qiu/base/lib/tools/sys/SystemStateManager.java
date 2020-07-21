@@ -8,7 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 
-import com.qiu.base.lib.inter.Callback;
+import com.qiu.base.lib.impl.Callback;
 import com.qiu.base.lib.tools.UtilTools;
 
 import java.util.ArrayList;
@@ -95,7 +95,7 @@ public class SystemStateManager {
 
     private void onNetStateChanged(int type, @NonNull String typeName) {
         for (Callback<NetState> callBack : mNetStateCallback) {
-            callBack.callback(new NetState(type, typeName));
+            callBack.onCall(new NetState(type, typeName));
         }
     }
 }

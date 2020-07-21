@@ -83,6 +83,14 @@ public class ThreadUtils {
     private ThreadUtils() {
     }
 
+    public void postMain(@NonNull Runnable runnable) {
+        postTask(runnable, 0, false);
+    }
+
+    public void postTask(@NonNull Runnable runnable) {
+        postTask(runnable, 0, true);
+    }
+
     public void postTask(@NonNull Runnable runnable, long delay, boolean isAsync) {
         postTask(runnable, delay, isAsync, false);
     }
