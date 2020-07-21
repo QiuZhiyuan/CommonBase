@@ -70,4 +70,16 @@ public abstract class BaseRecyclerSection {
     public void removeStateListener(@NonNull SectionStateListener listener) {
         mListeners.remove(listener);
     }
+
+    public void onCreate() {
+    }
+
+    public void onResume() {
+    }
+
+    public void onPause() {
+    }
+
+    public void onDestroy() {
+    }
 }
