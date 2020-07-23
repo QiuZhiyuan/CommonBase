@@ -1,5 +1,6 @@
 package com.qiu.base.lib.widget.recycler;
 
+import android.content.res.Resources;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -18,23 +19,19 @@ public abstract class BaseRecyclerViewHolder extends RecyclerView.ViewHolder {
     public final void onBind(@NonNull BaseRecyclerItem item) {
         mItem = item;
         bindItem(item);
-        onViewBinded(item);
     }
 
     public final void unBind() {
         unBindItem();
-        onViewRecycled();
     }
 
-    private void onViewBinded(@NonNull BaseRecyclerItem item) {
-
-    }
-
-    private void onViewRecycled() {
-
+    @NonNull
+    protected Resources getResources() {
+        return itemView.getResources();
     }
 
     public abstract void bindItem(@NonNull BaseRecyclerItem item);
 
     public abstract void unBindItem();
+
 }
