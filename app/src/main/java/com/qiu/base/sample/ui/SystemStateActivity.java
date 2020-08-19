@@ -3,7 +3,7 @@ package com.qiu.base.sample.ui;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 
-import com.qiu.base.lib.inter.Callback;
+import com.qiu.base.lib.impl.Callback;
 import com.qiu.base.lib.tools.sys.SystemStateManager;
 import com.qiu.base.lib.widget.logger.CommonLoggerActivity;
 
@@ -35,12 +35,6 @@ public class SystemStateActivity extends CommonLoggerActivity implements
         super.onDestroy();
     }
 
-    @Override
-    public void callback(SystemStateManager.NetState netState) {
-        addLog("NetWork state change Name : " + netState.typeName + " type : "
-                + netState.type);
-    }
-
     private void startListenNetworkChange() {
         SystemStateManager.i().startListenNetState(this);
         SystemStateManager.i().registerNetStateListener(this);
@@ -55,5 +49,11 @@ public class SystemStateActivity extends CommonLoggerActivity implements
         addLog("widthPixels: " + metrics.widthPixels);
         addLog("heightPixels: " + metrics.heightPixels);
         addLog("density:" + metrics.density);
+    }
+
+    @Override
+    public void onCall(SystemStateManager.NetState netState) {
+        addLog("NetWork state change Name : " + netState.typeName + " type : "
+                + netState.type);
     }
 }

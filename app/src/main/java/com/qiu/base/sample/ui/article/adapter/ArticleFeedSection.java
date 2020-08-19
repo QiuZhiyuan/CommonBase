@@ -23,11 +23,11 @@ public class ArticleFeedSection extends BaseRecyclerSection {
         @Override
         public BaseRecyclerViewHolder createViewHolder(@NonNull ViewGroup parent, int viewType) {
             if (viewType == TEXT_ITEM_ID) {
-                final View view = findViewById(parent, R.layout.article_text_item);
+                final View view = getLayoutById(parent, R.layout.article_text_item);
                 return new ArticleTextViewHolder(view);
             }
             if (viewType == IMAGE_ITEM_ID) {
-                final View view = findViewById(parent, R.layout.article_image_item);
+                final View view = getLayoutById(parent, R.layout.article_image_item);
                 return new ArticleImageViewHolder(view);
             } else {
                 throw new RuntimeException();
