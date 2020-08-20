@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 public class ListEntry<T> {
 
     public interface ListChangeListener {
-        public void onListChanged();
+        void onListChanged();
     }
 
     @NonNull
@@ -33,6 +33,7 @@ public class ListEntry<T> {
         return new ArrayList<T>();
     }
 
+    @NonNull
     public List<T> getList() {
         return mList;
     }

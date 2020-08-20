@@ -7,7 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-public abstract class BaseRecyclerViewHolder extends RecyclerView.ViewHolder {
+public abstract class BaseRecyclerViewHolder extends RecyclerView.ViewHolder implements
+        BaseRecyclerItem.UpdateViewListener {
 
     @Nullable
     protected BaseRecyclerItem mItem;
@@ -30,8 +31,14 @@ public abstract class BaseRecyclerViewHolder extends RecyclerView.ViewHolder {
         return itemView.getResources();
     }
 
-    public abstract void bindItem(@NonNull BaseRecyclerItem item);
+    public void bindItem(@NonNull BaseRecyclerItem item) {
+        item.setUpdateViewListener(this);
+    }
 
-    public abstract void unBindItem();
+    public void unBindItem() {
+    }
 
+    @Override
+    public void onDataUpdate() {
+    }
 }
