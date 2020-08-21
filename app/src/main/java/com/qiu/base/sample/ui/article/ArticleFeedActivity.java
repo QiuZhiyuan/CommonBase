@@ -6,14 +6,14 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.qiu.base.lib.impl.Callback;
-import com.qiu.base.lib.tools.Logger;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerAdapter;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerView;
 import com.qiu.base.sample.R;
 import com.qiu.base.sample.ui.article.adapter.ArticleFeedSection;
-import com.qiu.base.sample.ui.article.db.SimpleDbEntry;
-import com.qiu.base.sample.ui.article.db.SimpleTableStorageImpl;
+import com.qiu.base.sample.db.SimpleDbEntry;
+import com.qiu.base.sample.db.SimpleTableStorageImpl;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -25,22 +25,17 @@ public class ArticleFeedActivity extends Activity {
 
     @Nullable
     private BaseRecyclerView mRecyclerView;
-    @Nullable
-    protected ArticleFeedSection mSection;
+    @NonNull
+    private ArticleFeedSection mSection = new ArticleFeedSection();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_feed);
-
-        mSection = new ArticleFeedSection();
         prepareRecyclerView();
     }
 
     private void prepareRecyclerView() {
-        if (mSection == null) {
-            return;
-        }
         findViewById(R.id.btn_add_log).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,9 +68,6 @@ public class ArticleFeedActivity extends Activity {
     }
 
     private void createDataBase() {
-        if (mSection == null) {
-            return;
-        }
         SimpleDbEntry entry = new SimpleDbEntry("qiu", 28);
         SimpleTableStorageImpl.instance().insert(entry);
         SimpleTableStorageImpl.instance().queryAll(new Callback<List<SimpleDbEntry>>() {

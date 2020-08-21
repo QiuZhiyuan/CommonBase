@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/index_button_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btn_add_entry"
+        style="@style/BaseIndexButton"
+        android:text="@string/add_entry" />
+
+    <Button
+        android:id="@+id/btn_update_entry"
+        style="@style/BaseIndexButton"
+        android:text="@string/update_entry" />
+
+    <Button
+        android:id="@+id/btn_delete_entry"
+        style="@style/BaseIndexButton"
+        android:text="@string/delete_entry" />
+
+    <Button
+        android:id="@+id/btn_query_entry"
+        style="@style/BaseIndexButton"
+        android:text="@string/query_entry" />
+
+    <com.qiu.base.lib.widget.recycler.BaseRecyclerView
+        android:id="@+id/log_feed_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

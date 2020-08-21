@@ -14,5 +14,10 @@
     <string name="get_name">Get Name</string>
     <string name="start_db">Start DB</string>
     <string name="create_database">Create DataBase</string>
+    <string name="add_entry">Add Entry</string>
+    <string name="update_entry">Update Entry</string>
+    <string name="delete_entry">Delete Entry</string>
+    <string name="query_entry">Query Entry</string>
+    <string name="show_database">Show DataBase</string>
 
 </resources>

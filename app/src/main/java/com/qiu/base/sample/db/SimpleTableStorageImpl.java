@@ -1,4 +1,4 @@
-package com.qiu.base.sample.ui.article.db;
+package com.qiu.base.sample.db;
 
 import androidx.annotation.NonNull;
 

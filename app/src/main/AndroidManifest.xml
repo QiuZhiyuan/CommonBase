@@ -23,10 +23,10 @@
         <activity android:name=".ui.SystemStateActivity" />
         <activity android:name=".aidl.AidlReceiverActivity" />
         <activity android:name=".editable.EditableActivity" />
+        <activity android:name=".ui.DataBaseActivity" />
 
         <service
             android:name=".aidl.AIDLService"
             android:process="com.qiu.aidl.service" />
-
     </application>
 </manifest>

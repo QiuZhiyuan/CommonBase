@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.qiu.base.sample.aidl.AidlReceiverActivity;
+import com.qiu.base.sample.ui.DataBaseActivity;
 import com.qiu.base.sample.ui.GalleryActivity;
 import com.qiu.base.sample.ui.KeepAliveActivity;
 import com.qiu.base.sample.ui.SystemStateActivity;
@@ -50,6 +51,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.show_aidl_receiver:
                 openActivity(AidlReceiverActivity.class);
+                break;
+            case R.id.show_database:
+                openActivity(DataBaseActivity.class);
                 break;
         }
     }

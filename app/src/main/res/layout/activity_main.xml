@@ -33,5 +33,10 @@
             android:id="@+id/show_aidl_receiver"
             style="@style/BaseIndexButton"
             android:text="@string/show_aidl_receiver" />
+
+        <Button
+            android:id="@+id/show_database"
+            style="@style/BaseIndexButton"
+            android:text="@string/show_database" />
     </LinearLayout>
 </ScrollView>
