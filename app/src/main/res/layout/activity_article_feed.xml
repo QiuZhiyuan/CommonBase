@@ -19,6 +19,11 @@
         style="@style/BaseIndexButton"
         android:text="@string/clear_content" />
 
+    <Button
+        android:id="@+id/btn_create_db"
+        style="@style/BaseIndexButton"
+        android:text="@string/create_database" />
+
     <com.qiu.base.lib.widget.recycler.BaseRecyclerView
         android:id="@+id/article_feed_view"
         android:layout_width="match_parent"

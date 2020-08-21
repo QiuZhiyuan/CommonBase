@@ -12,5 +12,7 @@
     <string name="show_aidl_receiver">Show AIDL Receiver</string>
     <string name="set_name">Set Name</string>
     <string name="get_name">Get Name</string>
+    <string name="start_db">Start DB</string>
+    <string name="create_database">Create DataBase</string>
 
 </resources>
