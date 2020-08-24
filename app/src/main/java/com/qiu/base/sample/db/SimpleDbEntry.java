@@ -13,9 +13,9 @@ public class SimpleDbEntry extends TableBaseEntry {
 
     @Nullable
     @Column(name = "name", type = ColumnType.TEXT)
-    public String mName;
+    private String mName;
     @Column(name = "age", type = ColumnType.INTEGER)
-    public int mAge;
+    private int mAge;
 
     public SimpleDbEntry() {
         super();
@@ -30,7 +30,24 @@ public class SimpleDbEntry extends TableBaseEntry {
     @NonNull
     @Override
     public String toString() {
-        return SimpleDbEntry.class.getSimpleName() + " id:" + mId + " name:" + mName + " age:"
+        return SimpleDbEntry.class.getSimpleName() + " id:" + getId() + " name:" + mName + " age:"
                 + mAge;
+    }
+
+    @Nullable
+    public String getName() {
+        return mName;
+    }
+
+    public void setName(@Nullable String name) {
+        mName = name;
+    }
+
+    public int getAge() {
+        return mAge;
+    }
+
+    public void setAge(int age) {
+        mAge = age;
     }
 }

@@ -94,8 +94,8 @@ public class DataBaseActivity extends Activity implements View.OnClickListener {
     private void updateEntry() {
         final SimpleDbEntry entry = randomGetEntryFromList();
         if (entry != null) {
-            mSection.addLog("update:" + entry.mName);
-            entry.mName = entry.mName + " x";
+            mSection.addLog("update:" + entry.getName());
+            entry.setName(entry.getName() + " x");
             SimpleTableStorageImpl.instance().update(entry);
         }
     }
@@ -119,8 +119,8 @@ public class DataBaseActivity extends Activity implements View.OnClickListener {
     @NonNull
     private SimpleDbEntry createNewEntry() {
         SimpleDbEntry entry = new SimpleDbEntry();
-        entry.mAge = (int) (Math.random() * 100);
-        entry.mName = mEntryNameList[(int) (Math.random() * (mEntryNameList.length - 1))];
+        entry.setAge((int) (Math.random() * 100));
+        entry.setName(mEntryNameList[(int) (Math.random() * (mEntryNameList.length - 1))]);
         return entry;
     }
 
