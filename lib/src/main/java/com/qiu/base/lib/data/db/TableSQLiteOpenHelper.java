@@ -185,16 +185,22 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
         sb.append("CREATE TABLE ").append(mTableName).append(" (");
         for (int i = 0; i < mColumnEntryList.size(); i++) {
             final Column column = mColumnEntryList.get(i).mColumn;
+            final ReflectUtils.ValueType type =
+                    ReflectUtils.getValueType(mColumnEntryList.get(i).mField);
             sb.append(column.name());
-            switch (column.type()) {
-                case TEXT:
-                    sb.append(" TEXT");
+            switch (type) {
+                case SHORT:
+                case INT:
+                case LONG:
+                case FLOAT:
+                case DOUBLE:
+                    sb.append("INTEGER");
                     break;
-                case INTEGER:
-                    sb.append(" INTEGER");
+                case STRING:
+                    sb.append("TEXT");
                     break;
                 default:
-                    throw new RuntimeException("Unknown column type:" + column.type().toString());
+                    throw new RuntimeException(TAG + " Unknown field type");
             }
             if (column.primaryKey()) {
                 sb.append(" PRIMARY KEY");

@@ -11,8 +11,6 @@ public @interface Column {
 
     String name();
 
-    ColumnType type();
-
     boolean primaryKey() default false;
 
 }

@@ -5,16 +5,15 @@ import androidx.annotation.Nullable;
 
 import com.qiu.base.lib.data.db.TableBaseEntry;
 import com.qiu.base.lib.data.db.anno.Column;
-import com.qiu.base.lib.data.db.anno.ColumnType;
 import com.qiu.base.lib.data.db.anno.Table;
 
 @Table(name = "simple_entry")
 public class SimpleDbEntry extends TableBaseEntry {
 
     @Nullable
-    @Column(name = "name", type = ColumnType.TEXT)
+    @Column(name = "name")
     private String mName;
-    @Column(name = "age", type = ColumnType.INTEGER)
+    @Column(name = "age")
     private int mAge;
 
     public SimpleDbEntry() {
