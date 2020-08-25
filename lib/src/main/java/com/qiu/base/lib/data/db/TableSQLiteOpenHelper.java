@@ -56,7 +56,10 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
     }
 
     public void insert(T t) throws IllegalAccessException, InvocationTargetException {
-        getWritableDatabase().insert(mTableName, null, getInsertContentValues(t));
+        long id = getWritableDatabase().insert(mTableName, null, getInsertContentValues(t));
+        if (id != -1) {
+            t.setId(id);
+        }
     }
 
     public void update(@NonNull String where, @NonNull T t)
