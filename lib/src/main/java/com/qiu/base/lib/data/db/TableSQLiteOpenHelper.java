@@ -17,38 +17,12 @@ import com.qiu.base.lib.tools.ReflectUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenHelper {
 
     private static final String TAG = TableSQLiteOpenHelper.class.getSimpleName();
-
-    private static class ColumnEntry {
-        @NonNull
-        public final Field mField;
-        @Nullable
-        public final Method mSetMethod;
-        @Nullable
-        public final Method mGetMethod;
-        @NonNull
-        public final Column mColumn;
-
-        private ColumnEntry(@NonNull Column column, @NonNull Field field,
-                @Nullable Method setMethod, @Nullable Method getMethod) {
-            mField = field;
-            mColumn = column;
-            mSetMethod = setMethod;
-            mGetMethod = getMethod;
-            if (mSetMethod != null) {
-                Logger.d(TAG, mSetMethod.getName());
-            }
-            if (mGetMethod != null) {
-                Logger.d(TAG, mGetMethod.getName());
-            }
-        }
-    }
 
     @NonNull
     private final Class<T> mClz;
@@ -100,8 +74,7 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
     }
 
     @NonNull
-    public void queryAll(@NonNull Callback<List<T>> callback)
-            throws IllegalAccessException, InvocationTargetException {
+    public void queryAll(@NonNull Callback<List<T>> callback) {
         List<T> result = new ArrayList<>();
         final Cursor cursor = getReadableDatabase()
                 .query(mTableName, mColumns, null, null, null, null, null);
@@ -112,52 +85,14 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
                 break;
             }
             for (ColumnEntry entry : mColumnEntryList) {
-                final int index = cursor.getColumnIndex(entry.mColumn.name());
-                final ReflectUtils.ValueType type = ReflectUtils.getValueType(entry.mField);
-                if (entry.mSetMethod != null) {
-                    switch (type) {
-                        case SHORT:
-                            entry.mSetMethod.invoke(t, cursor.getShort(index));
-                            break;
-                        case INT:
-                            entry.mSetMethod.invoke(t, cursor.getInt(index));
-                            break;
-                        case LONG:
-                            entry.mSetMethod.invoke(t, cursor.getLong(index));
-                            break;
-                        case FLOAT:
-                            entry.mSetMethod.invoke(t, cursor.getFloat(index));
-                            break;
-                        case DOUBLE:
-                            entry.mSetMethod.invoke(t, cursor.getDouble(index));
-                            break;
-                        case STRING:
-                        default:
-                            entry.mSetMethod.invoke(t, cursor.getString(index));
-                            break;
-                    }
-                } else {
-                    switch (type) {
-                        case SHORT:
-                            entry.mField.setShort(t, cursor.getShort(index));
-                            break;
-                        case INT:
-                            entry.mField.setInt(t, cursor.getInt(index));
-                            break;
-                        case LONG:
-                            entry.mField.setLong(t, cursor.getLong(index));
-                            break;
-                        case FLOAT:
-                            entry.mField.setFloat(t, cursor.getFloat(index));
-                            break;
-                        case DOUBLE:
-                            entry.mField.setDouble(t, cursor.getDouble(index));
-                            break;
-                        case STRING:
-                        default:
-                            entry.mField.set(t, cursor.getString(index));
-                            break;
-                    }
+                try {
+                    entry.setValueFromCursor(t, cursor);
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                    Logger.e(TAG, e.toString());
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                    Logger.e(TAG, e.toString());
                 }
             }
             result.add(t);
@@ -194,16 +129,16 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
                 case LONG:
                 case FLOAT:
                 case DOUBLE:
-                    sb.append("INTEGER");
+                    sb.append(" INTEGER");
                     break;
                 case STRING:
-                    sb.append("TEXT");
+                    sb.append(" TEXT");
                     break;
                 default:
                     throw new RuntimeException(TAG + " Unknown field type");
             }
             if (column.primaryKey()) {
-                sb.append(" PRIMARY KEY");
+                sb.append(" PRIMARY KEY AUTOINCREMENT");
             }
             if (i < mColumnEntryList.size() - 1) {
                 sb.append(", ");
@@ -257,9 +192,15 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
             throws IllegalAccessException, InvocationTargetException {
         ContentValues values = new ContentValues();
         for (ColumnEntry entry : mColumnEntryList) {
+            if (entry.mColumn.primaryKey()) {
+                continue;
+            }
             final String name = entry.mColumn.name();
             if (entry.mGetMethod != null) {
                 final ReflectUtils.ValueType type = ReflectUtils.getValueType(entry.mGetMethod);
+                if (type == null) {
+                    continue;
+                }
                 switch (type) {
                     case SHORT:
                         values.put(name, (Short) entry.mGetMethod.invoke(t));
@@ -286,6 +227,9 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
                 }
             } else {
                 final ReflectUtils.ValueType type = ReflectUtils.getValueType(entry.mField);
+                if (type == null) {
+                    continue;
+                }
                 switch (type) {
                     case SHORT:
                         values.put(name, entry.mField.getShort(t));

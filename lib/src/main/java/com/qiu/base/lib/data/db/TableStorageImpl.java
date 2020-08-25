@@ -60,12 +60,7 @@ public abstract class TableStorageImpl<T extends TableBaseEntry> {
     }
 
     public void queryAll(Callback<List<T>> callback) {
-        try {
-            mTableSQLiteOpenHelper.queryAll(callback);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-            Logger.e(TAG, "query all:" + e.toString());
-        }
+        mTableSQLiteOpenHelper.queryAll(callback);
     }
 
 }

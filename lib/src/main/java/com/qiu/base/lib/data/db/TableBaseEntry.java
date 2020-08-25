@@ -18,7 +18,6 @@ public abstract class TableBaseEntry {
     private long mId;
 
     public TableBaseEntry() {
-        mId = UniqueId.get();
     }
 
     public long getId() {
