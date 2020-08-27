@@ -55,15 +55,14 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
         onCreate(db);
     }
 
-    public void insert(T t) throws IllegalAccessException, InvocationTargetException {
+    public void insert(T t) {
         long id = getWritableDatabase().insert(mTableName, null, getInsertContentValues(t));
         if (id != -1) {
             t.setId(id);
         }
     }
 
-    public void update(@NonNull String where, @NonNull T t)
-            throws IllegalAccessException, InvocationTargetException {
+    public void update(@NonNull String where, @NonNull T t) {
         getWritableDatabase().update(mTableName, getInsertContentValues(t), where, null);
     }
 
@@ -125,6 +124,9 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
             final Column column = mColumnEntryList.get(i).mColumn;
             final ReflectUtils.ValueType type =
                     ReflectUtils.getValueType(mColumnEntryList.get(i).mField);
+            if (type == null) {
+                continue;
+            }
             sb.append(column.name());
             switch (type) {
                 case SHORT:
@@ -191,73 +193,81 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
         return columns;
     }
 
-    private ContentValues getInsertContentValues(T t)
-            throws IllegalAccessException, InvocationTargetException {
+    private ContentValues getInsertContentValues(T t) {
         ContentValues values = new ContentValues();
         for (ColumnEntry entry : mColumnEntryList) {
             if (entry.mColumn.primaryKey()) {
                 continue;
             }
             final String name = entry.mColumn.name();
-            if (entry.mGetMethod != null) {
-                final ReflectUtils.ValueType type = ReflectUtils.getValueType(entry.mGetMethod);
-                if (type == null) {
-                    continue;
+            try {
+                if (entry.mGetMethod != null) {
+                    final ReflectUtils.ValueType type = ReflectUtils.getValueType(entry.mGetMethod);
+                    if (type == null) {
+                        continue;
+                    }
+                    switch (type) {
+                        case SHORT:
+                            values.put(name, (Short) entry.mGetMethod.invoke(t));
+                            break;
+                        case INT:
+                            values.put(name, (Integer) entry.mGetMethod.invoke(t));
+                            break;
+                        case LONG:
+                            values.put(name, (Long) entry.mGetMethod.invoke(t));
+                            break;
+                        case FLOAT:
+                            values.put(name, (Float) entry.mGetMethod.invoke(t));
+                            break;
+                        case DOUBLE:
+                            values.put(name, (Double) entry.mGetMethod.invoke(t));
+                            break;
+                        case STRING:
+                        default:
+                            final Object v = entry.mGetMethod.invoke(t);
+                            if (v != null) {
+                                values.put(name, v.toString());
+                            }
+                            break;
+                    }
+                } else {
+                    final ReflectUtils.ValueType type = ReflectUtils.getValueType(entry.mField);
+                    if (type == null) {
+                        continue;
+                    }
+                    switch (type) {
+                        case SHORT:
+                            values.put(name, entry.mField.getShort(t));
+                            break;
+                        case INT:
+                            values.put(name, entry.mField.getInt(t));
+                            break;
+                        case LONG:
+                            values.put(name, entry.mField.getLong(t));
+                            break;
+                        case FLOAT:
+                            values.put(name, entry.mField.getFloat(t));
+                            break;
+                        case DOUBLE:
+                            values.put(name, entry.mField.getDouble(t));
+                            break;
+                        case STRING:
+                        default:
+                            final Object v = entry.mField.get(t);
+                            if (v != null) {
+                                values.put(name, v.toString());
+                            }
+                            break;
+                    }
                 }
-                switch (type) {
-                    case SHORT:
-                        values.put(name, (Short) entry.mGetMethod.invoke(t));
-                        break;
-                    case INT:
-                        values.put(name, (Integer) entry.mGetMethod.invoke(t));
-                        break;
-                    case LONG:
-                        values.put(name, (Long) entry.mGetMethod.invoke(t));
-                        break;
-                    case FLOAT:
-                        values.put(name, (Float) entry.mGetMethod.invoke(t));
-                        break;
-                    case DOUBLE:
-                        values.put(name, (Double) entry.mGetMethod.invoke(t));
-                        break;
-                    case STRING:
-                    default:
-                        final Object v = entry.mGetMethod.invoke(t);
-                        if (v != null) {
-                            values.put(name, v.toString());
-                        }
-                        break;
-                }
-            } else {
-                final ReflectUtils.ValueType type = ReflectUtils.getValueType(entry.mField);
-                if (type == null) {
-                    continue;
-                }
-                switch (type) {
-                    case SHORT:
-                        values.put(name, entry.mField.getShort(t));
-                        break;
-                    case INT:
-                        values.put(name, entry.mField.getInt(t));
-                        break;
-                    case LONG:
-                        values.put(name, entry.mField.getLong(t));
-                        break;
-                    case FLOAT:
-                        values.put(name, entry.mField.getFloat(t));
-                        break;
-                    case DOUBLE:
-                        values.put(name, entry.mField.getDouble(t));
-                        break;
-                    case STRING:
-                    default:
-                        final Object v = entry.mField.get(t);
-                        if (v != null) {
-                            values.put(name, v.toString());
-                        }
-                        break;
-                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                Logger.e(TAG, name + " " + e.toString());
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+                Logger.e(TAG, name + " " + e.toString());
             }
+
         }
         return values;
     }

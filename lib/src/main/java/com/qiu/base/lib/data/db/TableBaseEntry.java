@@ -1,7 +1,5 @@
 package com.qiu.base.lib.data.db;
 
-import androidx.annotation.NonNull;
-
 import com.qiu.base.lib.data.db.anno.Column;
 
 /**
@@ -12,7 +10,6 @@ public abstract class TableBaseEntry {
 
     public static final String KEY_ID = "id";
 
-    @NonNull
     @Column(name = KEY_ID, primaryKey = true)
     private long mId;
 

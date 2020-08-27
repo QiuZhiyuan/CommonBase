@@ -30,12 +30,7 @@ public abstract class TableStorageImpl<T extends TableBaseEntry> {
     protected abstract int getVersion();
 
     public void insert(T t) {
-        try {
-            mTableSQLiteOpenHelper.insert(t);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-            Logger.d(TAG, "insert error:" + e.toString());
-        }
+        mTableSQLiteOpenHelper.insert(t);
     }
 
     public void delete(T t) {
@@ -47,12 +42,7 @@ public abstract class TableStorageImpl<T extends TableBaseEntry> {
     }
 
     public void update(T t) {
-        try {
-            mTableSQLiteOpenHelper.update(T.KEY_ID + "=" + t.getId(), t);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-            Logger.d(TAG, "update error:" + e.toString());
-        }
+        mTableSQLiteOpenHelper.update(T.KEY_ID + "=" + t.getId(), t);
     }
 
     public void query(Callback<T> callback, @NonNull ContentValues values) {
