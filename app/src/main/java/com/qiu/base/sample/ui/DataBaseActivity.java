@@ -29,7 +29,9 @@ public class DataBaseActivity extends Activity implements View.OnClickListener {
     @NonNull
     private List<SimpleDbEntry> mEntryList = new ArrayList<>();
     @NonNull
-    private String[] mEntryNameList = new String[]{"qiu", "wang", "liu", "li", "hong"};
+    private String[] mEntryNameList =
+            new String[]{"zhao", "qian", "sun", "li", "zhou", "wu", "zheng", "wang", "feng", "chen",
+                         "chu", "wei", "jiang", "shen", "han", "yang"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

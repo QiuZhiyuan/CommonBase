@@ -22,6 +22,10 @@ import java.util.List;
 
 public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenHelper {
 
+    public interface DataBaseUpgradeCallback {
+        void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion);
+    }
+
     private static final String TAG = TableSQLiteOpenHelper.class.getSimpleName();
 
     @NonNull
@@ -32,16 +36,20 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
     private List<ColumnEntry> mColumnEntryList;
     @NonNull
     private String[] mColumns;
+    @NonNull
+    private final DataBaseUpgradeCallback mUpgradeCallback;
 
     public TableSQLiteOpenHelper(@Nullable Context context, @Nullable String name,
             @Nullable SQLiteDatabase.CursorFactory factory, int version,
-            @NonNull Class<T> clz) {
+            @NonNull Class<T> clz,
+            @NonNull DataBaseUpgradeCallback upgradeCallback) {
         super(context, name, factory, version);
         Logger.d(TAG, clz.toString());
         mClz = clz;
         mTableName = getTableName();
         mColumnEntryList = getColumnList();
         mColumns = getColumns();
+        mUpgradeCallback = upgradeCallback;
     }
 
     @Override
@@ -51,8 +59,12 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(getDeleteTableSql());
+        onDeleteTable(db);
         onCreate(db);
+    }
+
+    public void onDeleteTable(SQLiteDatabase db) {
+        db.execSQL(getDeleteTableSql());
     }
 
     public void insert(@NonNull T t) {

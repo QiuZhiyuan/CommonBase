@@ -1,17 +1,17 @@
 package com.qiu.base.lib.data.db;
 
 import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 
 import androidx.annotation.NonNull;
 
 import com.qiu.base.lib.impl.Callback;
-import com.qiu.base.lib.tools.Logger;
 import com.qiu.base.lib.utils.App;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-public abstract class TableStorageImpl<T extends TableBaseEntry> {
+public abstract class TableStorageImpl<T extends TableBaseEntry> implements
+        TableSQLiteOpenHelper.DataBaseUpgradeCallback {
 
     private static final String TAG = TableStorageImpl.class.getSimpleName();
 
@@ -21,7 +21,13 @@ public abstract class TableStorageImpl<T extends TableBaseEntry> {
     protected TableStorageImpl(@NonNull Class<T> clz) {
         mTableSQLiteOpenHelper =
                 new TableSQLiteOpenHelper<>(App.i().getApplicationContext(), getDataBaseName(),
-                        null, getVersion(), clz);
+                        null, getVersion(), clz, this);
+    }
+
+    @Override
+    public void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion) {
+        mTableSQLiteOpenHelper.onDeleteTable(db);
+        mTableSQLiteOpenHelper.onCreate(db);
     }
 
     @NonNull
