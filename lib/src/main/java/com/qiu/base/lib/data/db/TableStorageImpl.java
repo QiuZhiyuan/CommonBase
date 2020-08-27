@@ -29,11 +29,11 @@ public abstract class TableStorageImpl<T extends TableBaseEntry> {
 
     protected abstract int getVersion();
 
-    public void insert(T t) {
+    public void insert(@NonNull T t) {
         mTableSQLiteOpenHelper.insert(t);
     }
 
-    public void delete(T t) {
+    public void delete(@NonNull T t) {
         delete(t.getId());
     }
 
@@ -41,15 +41,15 @@ public abstract class TableStorageImpl<T extends TableBaseEntry> {
         mTableSQLiteOpenHelper.delete(T.KEY_ID + "=" + id);
     }
 
-    public void update(T t) {
+    public void update(@NonNull T t) {
         mTableSQLiteOpenHelper.update(T.KEY_ID + "=" + t.getId(), t);
     }
 
-    public void query(Callback<T> callback, @NonNull ContentValues values) {
+    public void query(@NonNull Callback<T> callback, @NonNull ContentValues values) {
         mTableSQLiteOpenHelper.query(callback);
     }
 
-    public void queryAll(Callback<List<T>> callback) {
+    public void queryAll(@NonNull Callback<List<T>> callback) {
         mTableSQLiteOpenHelper.queryAll(callback);
     }
 

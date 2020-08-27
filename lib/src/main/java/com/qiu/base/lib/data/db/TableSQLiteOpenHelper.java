@@ -55,7 +55,7 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
         onCreate(db);
     }
 
-    public void insert(T t) {
+    public void insert(@NonNull T t) {
         long id = getWritableDatabase().insert(mTableName, null, getInsertContentValues(t));
         if (id != -1) {
             t.setId(id);
@@ -66,16 +66,14 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
         getWritableDatabase().update(mTableName, getInsertContentValues(t), where, null);
     }
 
-    public void delete(String where) {
+    public void delete(@NonNull String where) {
         getWritableDatabase().delete(mTableName, where, null);
     }
 
     // TODO Query elements by some case
-    @Nullable
     public void query(Callback<T> callback) {
     }
 
-    @NonNull
     public void queryAll(@NonNull Callback<List<T>> callback) {
         List<T> result = new ArrayList<>();
         final Cursor cursor = getReadableDatabase()
@@ -122,12 +120,12 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
         sb.append("CREATE TABLE ").append(mTableName).append(" (");
         for (int i = 0; i < mColumnEntryList.size(); i++) {
             final Column column = mColumnEntryList.get(i).mColumn;
+            sb.append(column.name());
             final ReflectUtils.ValueType type =
                     ReflectUtils.getValueType(mColumnEntryList.get(i).mField);
             if (type == null) {
                 continue;
             }
-            sb.append(column.name());
             switch (type) {
                 case SHORT:
                 case INT:
@@ -163,14 +161,23 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
         List<ColumnEntry> columnList = new ArrayList<>();
         List<Field> fields = ReflectUtils.getAllField(mClz);
         for (Field field : fields) {
-            Column column = field.getAnnotation(Column.class);
-            if (column != null) {
-                columnList
-                        .add(new ColumnEntry(column, field, ReflectUtils.getSetMethod(field, mClz),
-                                ReflectUtils.getGetMethod(field, mClz)));
+            ColumnEntry entry = createColumnEntry(field);
+            if (entry != null) {
+                columnList.add(entry);
             }
         }
         return columnList;
+    }
+
+    @Nullable
+    private ColumnEntry createColumnEntry(@NonNull Field field) {
+        Column column = field.getAnnotation(Column.class);
+        if (column != null) {
+            return new ColumnEntry(column, field, ReflectUtils.getSetMethod(field, mClz),
+                    ReflectUtils.getGetMethod(field, mClz));
+        } else {
+            return null;
+        }
     }
 
     @NonNull
