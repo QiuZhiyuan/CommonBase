@@ -8,19 +8,22 @@ import com.qiu.base.lib.data.db.anno.Column;
 import com.qiu.base.lib.data.db.anno.Table;
 
 @Table(name = "simple_entry")
-public class SimpleDbEntry extends TableBaseEntry {
+public class SimplePersonEntry extends TableBaseEntry {
 
     @Nullable
     @Column(name = "name")
     private String mName;
     @Column(name = "age")
     private int mAge;
+    @Nullable
+    @Column(name = "company")
+    private CompanyEntry mCompany;
 
-    public SimpleDbEntry() {
+    public SimplePersonEntry() {
         super();
     }
 
-    public SimpleDbEntry(@NonNull String name, int age) {
+    public SimplePersonEntry(@NonNull String name, int age) {
         super();
         mName = name;
         mAge = age;
@@ -29,8 +32,12 @@ public class SimpleDbEntry extends TableBaseEntry {
     @NonNull
     @Override
     public String toString() {
-        return SimpleDbEntry.class.getSimpleName() + " id:" + getId() + " name:" + mName + " age:"
-                + mAge;
+        String companyStr = null;
+        if (getCompany() != null) {
+            companyStr = getCompany().toString();
+        }
+        return "{" + SimplePersonEntry.class.getSimpleName() + " id:" + getId() + " name:" + mName
+                + " age:" + mAge + " company:" + companyStr + "}";
     }
 
     @Nullable
@@ -48,5 +55,14 @@ public class SimpleDbEntry extends TableBaseEntry {
 
     public void setAge(int age) {
         mAge = age;
+    }
+
+    @Nullable
+    public CompanyEntry getCompany() {
+        return mCompany;
+    }
+
+    public void setCompany(@Nullable CompanyEntry company) {
+        mCompany = company;
     }
 }

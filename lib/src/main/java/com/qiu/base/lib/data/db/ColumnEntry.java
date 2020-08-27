@@ -5,6 +5,7 @@ import android.database.Cursor;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.alibaba.fastjson.JSON;
 import com.qiu.base.lib.data.db.anno.Column;
 import com.qiu.base.lib.tools.Logger;
 import com.qiu.base.lib.tools.ReflectUtils;
@@ -58,16 +59,21 @@ public class ColumnEntry {
                     mSetMethod.invoke(t, cursor.getDouble(index));
                     break;
                 case STRING:
-                default:
                     mSetMethod.invoke(t, cursor.getString(index));
+                    break;
+                case OBJECT:
+                    Class<?> clz = ReflectUtils.getFirstParamsClass(mSetMethod);
+                    if (clz != null) {
+                        final Object obj = JSON.parseObject(cursor.getString(index), clz);
+                        mSetMethod.invoke(t, obj);
+                    }
+                    break;
+                default:
+                    Logger.e(TAG, "Unknown type");
                     break;
             }
         } else {
             final ReflectUtils.ValueType type = ReflectUtils.getValueType(mField);
-            if (type == null) {
-                Logger.e(TAG, "Field type is null");
-                return;
-            }
             switch (type) {
                 case SHORT:
                     mField.setShort(t, cursor.getShort(index));
@@ -85,8 +91,14 @@ public class ColumnEntry {
                     mField.setDouble(t, cursor.getDouble(index));
                     break;
                 case STRING:
-                default:
                     mField.set(t, cursor.getString(index));
+                    break;
+                case OBJECT:
+                    final Object obj = JSON.parseObject(cursor.getString(index), mField.getType());
+                    mField.set(t, obj);
+                    break;
+                default:
+                    Logger.e(TAG, "Unknown type");
                     break;
             }
         }

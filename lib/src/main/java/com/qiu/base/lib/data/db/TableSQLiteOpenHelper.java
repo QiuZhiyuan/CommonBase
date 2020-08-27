@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.alibaba.fastjson.JSON;
 import com.qiu.base.lib.data.db.anno.Column;
 import com.qiu.base.lib.data.db.anno.Table;
 import com.qiu.base.lib.impl.Callback;
@@ -135,9 +136,6 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
             sb.append(column.name());
             final ReflectUtils.ValueType type =
                     ReflectUtils.getValueType(mColumnEntryList.get(i).mField);
-            if (type == null) {
-                continue;
-            }
             switch (type) {
                 case SHORT:
                 case INT:
@@ -146,11 +144,11 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
                 case DOUBLE:
                     sb.append(" INTEGER");
                     break;
+                case OBJECT:
                 case STRING:
+                default:
                     sb.append(" TEXT");
                     break;
-                default:
-                    throw new RuntimeException(TAG + " Unknown field type");
             }
             if (column.primaryKey()) {
                 sb.append(" PRIMARY KEY AUTOINCREMENT");
@@ -222,9 +220,6 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
             try {
                 if (entry.mGetMethod != null) {
                     final ReflectUtils.ValueType type = ReflectUtils.getValueType(entry.mGetMethod);
-                    if (type == null) {
-                        continue;
-                    }
                     switch (type) {
                         case SHORT:
                             values.put(name, (Short) entry.mGetMethod.invoke(t));
@@ -242,18 +237,18 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
                             values.put(name, (Double) entry.mGetMethod.invoke(t));
                             break;
                         case STRING:
+                            values.put(name, (String) entry.mGetMethod.invoke(t));
+                            break;
+                        case OBJECT:
+                            final String objText = JSON.toJSONString(entry.mGetMethod.invoke(t));
+                            values.put(name, objText);
+                            break;
                         default:
-                            final Object v = entry.mGetMethod.invoke(t);
-                            if (v != null) {
-                                values.put(name, v.toString());
-                            }
+                            Logger.e(TAG, "Unknown type");
                             break;
                     }
                 } else {
                     final ReflectUtils.ValueType type = ReflectUtils.getValueType(entry.mField);
-                    if (type == null) {
-                        continue;
-                    }
                     switch (type) {
                         case SHORT:
                             values.put(name, entry.mField.getShort(t));
@@ -271,11 +266,13 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
                             values.put(name, entry.mField.getDouble(t));
                             break;
                         case STRING:
+                            values.put(name, (String) entry.mField.get(t));
+                            break;
+                        case OBJECT:
+                            final String objText = JSON.toJSONString(entry.mField.get(t));
+                            values.put(name, objText);
                         default:
-                            final Object v = entry.mField.get(t);
-                            if (v != null) {
-                                values.put(name, v.toString());
-                            }
+                            Logger.e(TAG, "Unknown type");
                             break;
                     }
                 }

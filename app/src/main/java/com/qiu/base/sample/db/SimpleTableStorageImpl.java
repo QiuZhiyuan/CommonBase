@@ -4,15 +4,15 @@ import androidx.annotation.NonNull;
 
 import com.qiu.base.lib.data.db.TableStorageImpl;
 
-public class SimpleTableStorageImpl extends TableStorageImpl<SimpleDbEntry> {
+public class SimpleTableStorageImpl extends TableStorageImpl<SimplePersonEntry> {
 
     private static final String DATA_BASE_NAME = "simple.db";
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
 
     private static volatile SimpleTableStorageImpl sInstance;
 
     protected SimpleTableStorageImpl() {
-        super(SimpleDbEntry.class);
+        super(SimplePersonEntry.class);
     }
 
     public static SimpleTableStorageImpl instance() {

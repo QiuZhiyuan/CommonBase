@@ -19,34 +19,42 @@ public class ReflectUtils {
         LONG,
         FLOAT,
         DOUBLE,
-        CHAR,
         STRING,
+        OBJECT,
     }
 
-    @Nullable
+    @NonNull
     public static ValueType getValueType(@NonNull Field field) {
         final String typeName = field.getType().getSimpleName();
-        return getValueByName(typeName);
+        return getValueTypeByName(typeName);
     }
 
-    @Nullable
+    @NonNull
     public static ValueType getValueType(@NonNull Method method) {
         final String typeName = method.getReturnType().getSimpleName();
-        return getValueByName(typeName);
+        return getValueTypeByName(typeName);
     }
 
     @Nullable
     public static ValueType getParamsType(@NonNull Method method) {
-        Class<?>[] typeClzList = method.getParameterTypes();
-        if (typeClzList.length > 0) {
-            final String typeName = method.getParameterTypes()[0].getSimpleName();
-            return getValueByName(typeName);
+        Class<?> params = getFirstParamsClass(method);
+        if (params != null) {
+            return getValueTypeByName(params.getSimpleName());
         }
         return null;
     }
 
     @Nullable
-    private static ValueType getValueByName(@NonNull String name) {
+    public static Class<?> getFirstParamsClass(@NonNull Method method) {
+        Class<?>[] typeClzList = method.getParameterTypes();
+        if (typeClzList.length > 0) {
+            return method.getParameterTypes()[0];
+        }
+        return null;
+    }
+
+    @NonNull
+    private static ValueType getValueTypeByName(@NonNull String name) {
         switch (name) {
             case "short":
                 return ValueType.SHORT;
@@ -54,10 +62,14 @@ public class ReflectUtils {
                 return ValueType.INT;
             case "long":
                 return ValueType.LONG;
+            case "float":
+                return ValueType.FLOAT;
+            case "double":
+                return ValueType.DOUBLE;
             case "String":
                 return ValueType.STRING;
             default:
-                return null;
+                return ValueType.OBJECT;
         }
     }
 

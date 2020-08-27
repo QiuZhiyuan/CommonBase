@@ -10,7 +10,7 @@ import com.qiu.base.lib.widget.recycler.BaseRecyclerAdapter;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerView;
 import com.qiu.base.sample.R;
 import com.qiu.base.sample.ui.article.adapter.ArticleFeedSection;
-import com.qiu.base.sample.db.SimpleDbEntry;
+import com.qiu.base.sample.db.SimplePersonEntry;
 import com.qiu.base.sample.db.SimpleTableStorageImpl;
 
 import androidx.annotation.NonNull;
@@ -68,13 +68,13 @@ public class ArticleFeedActivity extends Activity {
     }
 
     private void createDataBase() {
-        SimpleDbEntry entry = new SimpleDbEntry("qiu", 28);
+        SimplePersonEntry entry = new SimplePersonEntry("qiu", 28);
         SimpleTableStorageImpl.instance().insert(entry);
-        SimpleTableStorageImpl.instance().queryAll(new Callback<List<SimpleDbEntry>>() {
+        SimpleTableStorageImpl.instance().queryAll(new Callback<List<SimplePersonEntry>>() {
             @Override
-            public void onCall(List<SimpleDbEntry> simpleDbEntries) {
+            public void onCall(List<SimplePersonEntry> simpleDbEntries) {
                 mSection.addLog("simpleDbEntries size:" + simpleDbEntries.size());
-                for (SimpleDbEntry entryQuery : simpleDbEntries) {
+                for (SimplePersonEntry entryQuery : simpleDbEntries) {
                     mSection.addLog("entryQuery:" + entryQuery.toString());
                 }
             }

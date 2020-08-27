@@ -12,6 +12,9 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.support.jaxrs.FastJsonProvider;
+
 public class UtilTools {
     private UtilTools() {
 
@@ -39,5 +42,9 @@ public class UtilTools {
 
     public static int getPid() {
         return android.os.Process.myPid();
+    }
+
+    public static String toJson(@NonNull Object obj) {
+        return JSON.toJSONString(obj);
     }
 }
