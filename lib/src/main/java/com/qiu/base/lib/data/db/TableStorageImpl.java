@@ -47,6 +47,10 @@ public abstract class TableStorageImpl<T extends TableBaseEntry> implements
         mTableSQLiteOpenHelper.delete(T.KEY_ID + "=" + id);
     }
 
+    public void deleteAll() {
+        mTableSQLiteOpenHelper.delete("");
+    }
+
     public void update(@NonNull T t) {
         mTableSQLiteOpenHelper.update(T.KEY_ID + "=" + t.getId(), t);
     }

@@ -2,8 +2,11 @@ package com.qiu.base.lib.utils;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageManager;
 
 import androidx.annotation.NonNull;
+
+import java.security.Permission;
 
 public class App {
 
@@ -32,5 +35,10 @@ public class App {
     @NonNull
     public Context getApplicationContext() {
         return mApplication.getApplicationContext();
+    }
+
+    @NonNull
+    public PackageManager getPackageManager() {
+        return mApplication.getPackageManager();
     }
 }

@@ -7,6 +7,9 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -38,6 +41,10 @@ public class UtilTools {
         } else {
             return (str1 == str2) || (str1 != null && str1.equals(str2));
         }
+    }
+
+    public static String getDateString(long time) {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(time));
     }
 
     public static int getPid() {

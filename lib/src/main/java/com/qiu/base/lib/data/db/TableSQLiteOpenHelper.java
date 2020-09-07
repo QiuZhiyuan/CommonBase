@@ -150,7 +150,7 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
                     sb.append(" TEXT");
                     break;
             }
-            if (column.primaryKey()) {
+            if (column.primaryKey() && column.name().equals(TableBaseEntry.KEY_ID)) {
                 sb.append(" PRIMARY KEY AUTOINCREMENT");
             }
             if (i < mColumnEntryList.size() - 1) {

@@ -11,7 +11,7 @@ import com.qiu.base.lib.data.db.anno.Table;
 public class SimplePersonEntry extends TableBaseEntry {
 
     @Nullable
-    @Column(name = "name")
+    @Column(name = "name", primaryKey = true)
     private String mName;
     @Column(name = "age")
     private int mAge;
