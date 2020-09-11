@@ -15,7 +15,8 @@ import com.qiu.base.lib.data.db.TableBaseEntry;
 import com.qiu.base.lib.impl.Callback;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerAdapter;
 import com.qiu.base.sample.R;
-import com.qiu.base.sample.db.SimpleDbEntry;
+import com.qiu.base.sample.db.CompanyEntry;
+import com.qiu.base.sample.db.SimplePersonEntry;
 import com.qiu.base.sample.db.SimpleTableStorageImpl;
 import com.qiu.base.sample.ui.article.adapter.ArticleFeedSection;
 
@@ -27,9 +28,13 @@ public class DataBaseActivity extends Activity implements View.OnClickListener {
     @NonNull
     private ArticleFeedSection mSection = new ArticleFeedSection();
     @NonNull
-    private List<SimpleDbEntry> mEntryList = new ArrayList<>();
+    private List<SimplePersonEntry> mEntryList = new ArrayList<>();
     @NonNull
-    private String[] mEntryNameList = new String[]{"qiu", "wang", "liu", "li", "hong"};
+    private String[] mEntryNameList =
+            new String[]{"zhao", "qian", "sun", "li", "zhou", "wu", "zheng", "wang", "feng", "chen",
+                         "chu", "wei", "jiang", "shen", "han", "yang"};
+    @NonNull
+    private String[] mCompanyNameList = new String[]{"baidu", "meituan", "ali", "tencent"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,7 +75,7 @@ public class DataBaseActivity extends Activity implements View.OnClickListener {
     }
 
     private void addEntry() {
-        final SimpleDbEntry entry = createNewEntry();
+        final SimplePersonEntry entry = createNewEntry();
         mEntryList.add(entry);
         SimpleTableStorageImpl.instance().insert(entry);
         mSection.addLog("add:");
@@ -79,7 +84,7 @@ public class DataBaseActivity extends Activity implements View.OnClickListener {
     }
 
     private void deleteEntry() {
-        final SimpleDbEntry entry = randomGetEntryFromList();
+        final SimplePersonEntry entry = randomGetEntryFromList();
         if (entry != null) {
             SimpleTableStorageImpl.instance().delete(entry);
             mSection.addLog("delete:");
@@ -87,12 +92,10 @@ public class DataBaseActivity extends Activity implements View.OnClickListener {
         } else {
             mSection.addLog("delete: entry is null");
         }
-
-
     }
 
     private void updateEntry() {
-        final SimpleDbEntry entry = randomGetEntryFromList();
+        final SimplePersonEntry entry = randomGetEntryFromList();
         if (entry != null) {
             mSection.addLog("update:" + entry.getName());
             entry.setName(entry.getName() + " x");
@@ -101,14 +104,14 @@ public class DataBaseActivity extends Activity implements View.OnClickListener {
     }
 
     private void queryEntry() {
-        SimpleTableStorageImpl.instance().queryAll(new Callback<List<SimpleDbEntry>>() {
+        SimpleTableStorageImpl.instance().queryAll(new Callback<List<SimplePersonEntry>>() {
             @Override
-            public void onCall(List<SimpleDbEntry> simpleDbEntries) {
+            public void onCall(List<SimplePersonEntry> simpleDbEntries) {
                 mEntryList.clear();
                 mEntryList.addAll(simpleDbEntries);
                 mSection.addLog("query:");
                 for (TableBaseEntry entry : mEntryList) {
-                    if (entry instanceof SimpleDbEntry) {
+                    if (entry instanceof SimplePersonEntry) {
                         mSection.addLog(entry.toString());
                     }
                 }
@@ -117,15 +120,19 @@ public class DataBaseActivity extends Activity implements View.OnClickListener {
     }
 
     @NonNull
-    private SimpleDbEntry createNewEntry() {
-        SimpleDbEntry entry = new SimpleDbEntry();
+    private SimplePersonEntry createNewEntry() {
+        SimplePersonEntry entry = new SimplePersonEntry();
         entry.setAge((int) (Math.random() * 100));
         entry.setName(mEntryNameList[(int) (Math.random() * (mEntryNameList.length - 1))]);
+        final CompanyEntry companyEntry = new CompanyEntry();
+        companyEntry
+                .setName(mCompanyNameList[(int) (Math.random() * (mCompanyNameList.length - 1))]);
+        entry.setCompany(companyEntry);
         return entry;
     }
 
     @Nullable
-    private SimpleDbEntry randomGetEntryFromList() {
+    private SimplePersonEntry randomGetEntryFromList() {
         if (mEntryList.isEmpty()) {
             return null;
         }

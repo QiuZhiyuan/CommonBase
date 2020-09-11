@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.alibaba.fastjson.JSON;
 import com.qiu.base.lib.data.db.anno.Column;
 import com.qiu.base.lib.data.db.anno.Table;
 import com.qiu.base.lib.impl.Callback;
@@ -22,6 +23,10 @@ import java.util.List;
 
 public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenHelper {
 
+    public interface DataBaseUpgradeCallback {
+        void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion);
+    }
+
     private static final String TAG = TableSQLiteOpenHelper.class.getSimpleName();
 
     @NonNull
@@ -32,16 +37,20 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
     private List<ColumnEntry> mColumnEntryList;
     @NonNull
     private String[] mColumns;
+    @NonNull
+    private final DataBaseUpgradeCallback mUpgradeCallback;
 
     public TableSQLiteOpenHelper(@Nullable Context context, @Nullable String name,
             @Nullable SQLiteDatabase.CursorFactory factory, int version,
-            @NonNull Class<T> clz) {
+            @NonNull Class<T> clz,
+            @NonNull DataBaseUpgradeCallback upgradeCallback) {
         super(context, name, factory, version);
         Logger.d(TAG, clz.toString());
         mClz = clz;
         mTableName = getTableName();
         mColumnEntryList = getColumnList();
         mColumns = getColumns();
+        mUpgradeCallback = upgradeCallback;
     }
 
     @Override
@@ -51,32 +60,33 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(getDeleteTableSql());
+        onDeleteTable(db);
         onCreate(db);
     }
 
-    public void insert(T t) throws IllegalAccessException, InvocationTargetException {
+    public void onDeleteTable(SQLiteDatabase db) {
+        db.execSQL(getDeleteTableSql());
+    }
+
+    public void insert(@NonNull T t) {
         long id = getWritableDatabase().insert(mTableName, null, getInsertContentValues(t));
         if (id != -1) {
             t.setId(id);
         }
     }
 
-    public void update(@NonNull String where, @NonNull T t)
-            throws IllegalAccessException, InvocationTargetException {
+    public void update(@NonNull String where, @NonNull T t) {
         getWritableDatabase().update(mTableName, getInsertContentValues(t), where, null);
     }
 
-    public void delete(String where) {
+    public void delete(@NonNull String where) {
         getWritableDatabase().delete(mTableName, where, null);
     }
 
     // TODO Query elements by some case
-    @Nullable
     public void query(Callback<T> callback) {
     }
 
-    @NonNull
     public void queryAll(@NonNull Callback<List<T>> callback) {
         List<T> result = new ArrayList<>();
         final Cursor cursor = getReadableDatabase()
@@ -123,9 +133,9 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
         sb.append("CREATE TABLE ").append(mTableName).append(" (");
         for (int i = 0; i < mColumnEntryList.size(); i++) {
             final Column column = mColumnEntryList.get(i).mColumn;
+            sb.append(column.name());
             final ReflectUtils.ValueType type =
                     ReflectUtils.getValueType(mColumnEntryList.get(i).mField);
-            sb.append(column.name());
             switch (type) {
                 case SHORT:
                 case INT:
@@ -134,13 +144,13 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
                 case DOUBLE:
                     sb.append(" INTEGER");
                     break;
+                case OBJECT:
                 case STRING:
+                default:
                     sb.append(" TEXT");
                     break;
-                default:
-                    throw new RuntimeException(TAG + " Unknown field type");
             }
-            if (column.primaryKey()) {
+            if (column.primaryKey() && column.name().equals(TableBaseEntry.KEY_ID)) {
                 sb.append(" PRIMARY KEY AUTOINCREMENT");
             }
             if (i < mColumnEntryList.size() - 1) {
@@ -161,14 +171,23 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
         List<ColumnEntry> columnList = new ArrayList<>();
         List<Field> fields = ReflectUtils.getAllField(mClz);
         for (Field field : fields) {
-            Column column = field.getAnnotation(Column.class);
-            if (column != null) {
-                columnList
-                        .add(new ColumnEntry(column, field, ReflectUtils.getSetMethod(field, mClz),
-                                ReflectUtils.getGetMethod(field, mClz)));
+            ColumnEntry entry = createColumnEntry(field);
+            if (entry != null) {
+                columnList.add(entry);
             }
         }
         return columnList;
+    }
+
+    @Nullable
+    private ColumnEntry createColumnEntry(@NonNull Field field) {
+        Column column = field.getAnnotation(Column.class);
+        if (column != null) {
+            return new ColumnEntry(column, field, ReflectUtils.getSetMethod(field, mClz),
+                    ReflectUtils.getGetMethod(field, mClz));
+        } else {
+            return null;
+        }
     }
 
     @NonNull
@@ -191,73 +210,80 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
         return columns;
     }
 
-    private ContentValues getInsertContentValues(T t)
-            throws IllegalAccessException, InvocationTargetException {
+    private ContentValues getInsertContentValues(T t) {
         ContentValues values = new ContentValues();
         for (ColumnEntry entry : mColumnEntryList) {
             if (entry.mColumn.primaryKey()) {
                 continue;
             }
             final String name = entry.mColumn.name();
-            if (entry.mGetMethod != null) {
-                final ReflectUtils.ValueType type = ReflectUtils.getValueType(entry.mGetMethod);
-                if (type == null) {
-                    continue;
+            try {
+                if (entry.mGetMethod != null) {
+                    final ReflectUtils.ValueType type = ReflectUtils.getValueType(entry.mGetMethod);
+                    switch (type) {
+                        case SHORT:
+                            values.put(name, (Short) entry.mGetMethod.invoke(t));
+                            break;
+                        case INT:
+                            values.put(name, (Integer) entry.mGetMethod.invoke(t));
+                            break;
+                        case LONG:
+                            values.put(name, (Long) entry.mGetMethod.invoke(t));
+                            break;
+                        case FLOAT:
+                            values.put(name, (Float) entry.mGetMethod.invoke(t));
+                            break;
+                        case DOUBLE:
+                            values.put(name, (Double) entry.mGetMethod.invoke(t));
+                            break;
+                        case STRING:
+                            values.put(name, (String) entry.mGetMethod.invoke(t));
+                            break;
+                        case OBJECT:
+                            final String objText = JSON.toJSONString(entry.mGetMethod.invoke(t));
+                            values.put(name, objText);
+                            break;
+                        default:
+                            Logger.e(TAG, "Unknown type");
+                            break;
+                    }
+                } else {
+                    final ReflectUtils.ValueType type = ReflectUtils.getValueType(entry.mField);
+                    switch (type) {
+                        case SHORT:
+                            values.put(name, entry.mField.getShort(t));
+                            break;
+                        case INT:
+                            values.put(name, entry.mField.getInt(t));
+                            break;
+                        case LONG:
+                            values.put(name, entry.mField.getLong(t));
+                            break;
+                        case FLOAT:
+                            values.put(name, entry.mField.getFloat(t));
+                            break;
+                        case DOUBLE:
+                            values.put(name, entry.mField.getDouble(t));
+                            break;
+                        case STRING:
+                            values.put(name, (String) entry.mField.get(t));
+                            break;
+                        case OBJECT:
+                            final String objText = JSON.toJSONString(entry.mField.get(t));
+                            values.put(name, objText);
+                        default:
+                            Logger.e(TAG, "Unknown type");
+                            break;
+                    }
                 }
-                switch (type) {
-                    case SHORT:
-                        values.put(name, (Short) entry.mGetMethod.invoke(t));
-                        break;
-                    case INT:
-                        values.put(name, (Integer) entry.mGetMethod.invoke(t));
-                        break;
-                    case LONG:
-                        values.put(name, (Long) entry.mGetMethod.invoke(t));
-                        break;
-                    case FLOAT:
-                        values.put(name, (Float) entry.mGetMethod.invoke(t));
-                        break;
-                    case DOUBLE:
-                        values.put(name, (Double) entry.mGetMethod.invoke(t));
-                        break;
-                    case STRING:
-                    default:
-                        final Object v = entry.mGetMethod.invoke(t);
-                        if (v != null) {
-                            values.put(name, v.toString());
-                        }
-                        break;
-                }
-            } else {
-                final ReflectUtils.ValueType type = ReflectUtils.getValueType(entry.mField);
-                if (type == null) {
-                    continue;
-                }
-                switch (type) {
-                    case SHORT:
-                        values.put(name, entry.mField.getShort(t));
-                        break;
-                    case INT:
-                        values.put(name, entry.mField.getInt(t));
-                        break;
-                    case LONG:
-                        values.put(name, entry.mField.getLong(t));
-                        break;
-                    case FLOAT:
-                        values.put(name, entry.mField.getFloat(t));
-                        break;
-                    case DOUBLE:
-                        values.put(name, entry.mField.getDouble(t));
-                        break;
-                    case STRING:
-                    default:
-                        final Object v = entry.mField.get(t);
-                        if (v != null) {
-                            values.put(name, v.toString());
-                        }
-                        break;
-                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                Logger.e(TAG, name + " " + e.toString());
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+                Logger.e(TAG, name + " " + e.toString());
             }
+
         }
         return values;
     }
