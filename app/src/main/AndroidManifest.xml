@@ -24,6 +24,7 @@
         <activity android:name=".aidl.AidlReceiverActivity" />
         <activity android:name=".editable.EditableActivity" />
         <activity android:name=".ui.DataBaseActivity" />
+        <activity android:name=".ui.NetworkActivity" />
 
         <service
             android:name=".aidl.AIDLService"

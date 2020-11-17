@@ -104,11 +104,15 @@ public class DataBaseActivity extends Activity implements View.OnClickListener {
     }
 
     private void queryEntry() {
-        SimpleTableStorageImpl.instance().queryAll(new Callback<List<SimplePersonEntry>>() {
+        SimpleTableStorageImpl.instance().queryAll(new Callback<List<? extends TableBaseEntry>>() {
             @Override
-            public void onCall(List<SimplePersonEntry> simpleDbEntries) {
+            public void onCall(List<? extends TableBaseEntry> simpleDbEntries) {
                 mEntryList.clear();
-                mEntryList.addAll(simpleDbEntries);
+                for (TableBaseEntry entry : simpleDbEntries) {
+                    if (entry instanceof SimplePersonEntry) {
+                        mEntryList.add((SimplePersonEntry) entry);
+                    }
+                }
                 mSection.addLog("query:");
                 for (TableBaseEntry entry : mEntryList) {
                     if (entry instanceof SimplePersonEntry) {
@@ -116,7 +120,7 @@ public class DataBaseActivity extends Activity implements View.OnClickListener {
                     }
                 }
             }
-        });
+        }, SimplePersonEntry.class);
     }
 
     @NonNull

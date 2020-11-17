@@ -19,5 +19,6 @@
     <string name="delete_entry">Delete Entry</string>
     <string name="query_entry">Query Entry</string>
     <string name="show_database">Show DataBase</string>
+    <string name="show_network">Show Network</string>
 
 </resources>

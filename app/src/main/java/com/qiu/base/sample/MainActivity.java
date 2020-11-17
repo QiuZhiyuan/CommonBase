@@ -55,6 +55,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case R.id.show_database:
                 openActivity(DataBaseActivity.class);
                 break;
+            case R.id.show_net:
+
+                break;
         }
     }
 

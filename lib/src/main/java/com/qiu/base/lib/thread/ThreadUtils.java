@@ -4,8 +4,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
-import com.qiu.base.lib.tools.UtilTools;
-
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -77,8 +77,71 @@ public class ThreadUtils {
         }
     }
 
+    private static class ScheduleHandler extends Handler {
+
+        private static class ScheduleEntry {
+            final int id;
+            @NonNull
+            final Runnable task;
+            final long duration;
+
+            private ScheduleEntry(int id, @NonNull Runnable task, long duration) {
+                this.id = id;
+                this.task = task;
+                this.duration = duration;
+            }
+        }
+
+        private Set<ScheduleEntry> mScheduleEntrySet = new HashSet<>();
+
+        ScheduleHandler() {
+            super(Looper.getMainLooper());
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            removeMessages(msg.what);
+            if (msg.obj instanceof ScheduleEntry) {
+                final ScheduleEntry entry = (ScheduleEntry) msg.obj;
+                if (mScheduleEntrySet.contains(entry)) {
+                    entry.task.run();
+                    sendSchedule(entry);
+                }
+            } else {
+                throw new RuntimeException("Only send scheduleEntry");
+            }
+        }
+
+        private void sendSchedule(@NonNull ScheduleEntry entry) {
+            final Message msg = obtainMessage();
+            msg.what = entry.id;
+            msg.obj = entry;
+            sendMessageDelayed(msg, entry.duration);
+        }
+
+        public void postNewSchedule(int scheduleId, @NonNull Runnable runnable, long duration) {
+            cancelSchedule(scheduleId);
+            final ScheduleEntry entry = new ScheduleEntry(scheduleId, runnable, duration);
+            mScheduleEntrySet.add(entry);
+            sendSchedule(entry);
+
+        }
+
+        public void cancelSchedule(int scheduleId) {
+            removeMessages(scheduleId);
+            for (ScheduleEntry entry : mScheduleEntrySet) {
+                if (entry.id == scheduleId) {
+                    mScheduleEntrySet.remove(entry);
+                    break;
+                }
+            }
+        }
+    }
+
     @NonNull
     private final MainHandler mMainHandler = new MainHandler();
+    @NonNull
+    private final ScheduleHandler mScheduleHandler = new ScheduleHandler();
 
     private ThreadUtils() {
     }
@@ -106,5 +169,13 @@ public class ThreadUtils {
         } else {
             mMainHandler.postDelayed(runnable, delay);
         }
+    }
+
+    public void postSchedule(int id, @NonNull Runnable runnable, long duration) {
+        mScheduleHandler.postNewSchedule(id, runnable, duration);
+    }
+
+    public void cancelSchedule(int id) {
+        mScheduleHandler.cancelSchedule(id);
     }
 }

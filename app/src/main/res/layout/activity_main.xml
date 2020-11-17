@@ -38,5 +38,10 @@
             android:id="@+id/show_database"
             style="@style/BaseIndexButton"
             android:text="@string/show_database" />
+
+        <Button
+            android:id="@+id/show_net"
+            style="@style/BaseIndexButton"
+            android:text="@string/show_network" />
     </LinearLayout>
 </ScrollView>

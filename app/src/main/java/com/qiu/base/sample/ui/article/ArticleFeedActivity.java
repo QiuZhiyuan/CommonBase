@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 
+import com.qiu.base.lib.data.db.TableBaseEntry;
 import com.qiu.base.lib.impl.Callback;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerAdapter;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerView;
@@ -70,14 +71,14 @@ public class ArticleFeedActivity extends Activity {
     private void createDataBase() {
         SimplePersonEntry entry = new SimplePersonEntry("qiu", 28);
         SimpleTableStorageImpl.instance().insert(entry);
-        SimpleTableStorageImpl.instance().queryAll(new Callback<List<SimplePersonEntry>>() {
+        SimpleTableStorageImpl.instance().queryAll(new Callback<List<? extends TableBaseEntry>>() {
             @Override
-            public void onCall(List<SimplePersonEntry> simpleDbEntries) {
+            public void onCall(List<? extends TableBaseEntry> simpleDbEntries) {
                 mSection.addLog("simpleDbEntries size:" + simpleDbEntries.size());
-                for (SimplePersonEntry entryQuery : simpleDbEntries) {
+                for (TableBaseEntry entryQuery : simpleDbEntries) {
                     mSection.addLog("entryQuery:" + entryQuery.toString());
                 }
             }
-        });
+        }, SimplePersonEntry.class);
     }
 }

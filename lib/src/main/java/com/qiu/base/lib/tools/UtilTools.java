@@ -20,7 +20,6 @@ import com.alibaba.fastjson.support.jaxrs.FastJsonProvider;
 
 public class UtilTools {
     private UtilTools() {
-
     }
 
     public static Bitmap transDrawableToBitmap(@NonNull Drawable drawable) {

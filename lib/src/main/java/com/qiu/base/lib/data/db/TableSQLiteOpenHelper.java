@@ -23,10 +23,6 @@ import java.util.List;
 
 public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenHelper {
 
-    public interface DataBaseUpgradeCallback {
-        void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion);
-    }
-
     private static final String TAG = TableSQLiteOpenHelper.class.getSimpleName();
 
     @NonNull
@@ -37,20 +33,16 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
     private List<ColumnEntry> mColumnEntryList;
     @NonNull
     private String[] mColumns;
-    @NonNull
-    private final DataBaseUpgradeCallback mUpgradeCallback;
 
     public TableSQLiteOpenHelper(@Nullable Context context, @Nullable String name,
             @Nullable SQLiteDatabase.CursorFactory factory, int version,
-            @NonNull Class<T> clz,
-            @NonNull DataBaseUpgradeCallback upgradeCallback) {
+            @NonNull Class<T> clz) {
         super(context, name, factory, version);
         Logger.d(TAG, clz.toString());
         mClz = clz;
         mTableName = getTableName();
         mColumnEntryList = getColumnList();
         mColumns = getColumns();
-        mUpgradeCallback = upgradeCallback;
     }
 
     @Override
@@ -68,14 +60,14 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
         db.execSQL(getDeleteTableSql());
     }
 
-    public void insert(@NonNull T t) {
+    public void insert(@NonNull TableBaseEntry t) {
         long id = getWritableDatabase().insert(mTableName, null, getInsertContentValues(t));
         if (id != -1) {
             t.setId(id);
         }
     }
 
-    public void update(@NonNull String where, @NonNull T t) {
+    public void update(@NonNull String where, @NonNull TableBaseEntry t) {
         getWritableDatabase().update(mTableName, getInsertContentValues(t), where, null);
     }
 
@@ -87,7 +79,7 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
     public void query(Callback<T> callback) {
     }
 
-    public void queryAll(@NonNull Callback<List<T>> callback) {
+    public List<T> queryAll() {
         List<T> result = new ArrayList<>();
         final Cursor cursor = getReadableDatabase()
                 .query(mTableName, mColumns, null, null, null, null, null);
@@ -111,7 +103,7 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
             result.add(t);
         }
         cursor.close();
-        callback.onCall(result);
+        return result;
     }
 
     @Nullable
@@ -210,7 +202,8 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
         return columns;
     }
 
-    private ContentValues getInsertContentValues(T t) {
+    @NonNull
+    private ContentValues getInsertContentValues(@NonNull TableBaseEntry t) {
         ContentValues values = new ContentValues();
         for (ColumnEntry entry : mColumnEntryList) {
             if (entry.mColumn.primaryKey()) {
