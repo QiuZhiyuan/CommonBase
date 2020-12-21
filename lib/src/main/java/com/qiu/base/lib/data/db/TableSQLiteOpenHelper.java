@@ -28,11 +28,11 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
     @NonNull
     private final Class<T> mClz;
     @NonNull
-    private String mTableName;
+    private final String mTableName;
     @NonNull
-    private List<ColumnEntry> mColumnEntryList;
+    private final List<ColumnEntry> mColumnEntryList;
     @NonNull
-    private String[] mColumns;
+    private final String[] mColumns;
 
     public TableSQLiteOpenHelper(@Nullable Context context, @Nullable String name,
             @Nullable SQLiteDatabase.CursorFactory factory, int version,
