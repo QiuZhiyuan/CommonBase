@@ -103,4 +103,14 @@ public class ColumnEntry {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return "ColumnEntry{" +
+                "mField=" + mField +
+                ", mSetMethod=" + mSetMethod +
+                ", mGetMethod=" + mGetMethod +
+                ", mColumn=" + mColumn +
+                '}';
+    }
 }

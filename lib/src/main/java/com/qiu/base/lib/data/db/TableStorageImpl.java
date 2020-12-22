@@ -1,16 +1,18 @@
 package com.qiu.base.lib.data.db;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.qiu.base.lib.impl.Callback;
 import com.qiu.base.lib.thread.ThreadUtils;
+import com.qiu.base.lib.tools.UtilTools;
 import com.qiu.base.lib.utils.App;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class TableStorageImpl{
+public abstract class TableStorageImpl {
 
     private static final String TAG = TableStorageImpl.class.getSimpleName();
 
@@ -31,7 +33,7 @@ public abstract class TableStorageImpl{
     }
 
     public void delete(@NonNull TableBaseEntry t) {
-        getSQLiteHelper(t.getClass()).delete(TableBaseEntry.KEY_ID + "=" + t.getId());
+        getSQLiteHelper(t.getClass()).delete(t);
     }
 
     public void deleteAll(@NonNull Class<? extends TableBaseEntry> clz) {
@@ -39,15 +41,15 @@ public abstract class TableStorageImpl{
     }
 
     public void update(@NonNull TableBaseEntry t) {
-        getSQLiteHelper(t.getClass()).update(TableBaseEntry.KEY_ID + "=" + t.getId(), t);
+        getSQLiteHelper(t.getClass()).update(t);
     }
 
-    public void queryAll(@NonNull final Callback<List<? extends TableBaseEntry>> callback,
-            @NonNull final Class<? extends TableBaseEntry> clz) {
+    public void query(@NonNull final Callback<List<? extends TableBaseEntry>> callback,
+            @NonNull final Class<? extends TableBaseEntry> clz, @Nullable final String where) {
         ThreadUtils.i().postTask(new Runnable() {
             @Override
             public void run() {
-                final List<? extends TableBaseEntry> result = getSQLiteHelper(clz).queryAll();
+                final List<? extends TableBaseEntry> result = getSQLiteHelper(clz).query(where);
                 ThreadUtils.i().postMain(new Runnable() {
                     @Override
                     public void run() {
@@ -56,6 +58,11 @@ public abstract class TableStorageImpl{
                 });
             }
         });
+    }
+
+    public void queryAll(@NonNull final Callback<List<? extends TableBaseEntry>> callback,
+            @NonNull final Class<? extends TableBaseEntry> clz) {
+        query(callback, clz, null);
     }
 
     @NonNull

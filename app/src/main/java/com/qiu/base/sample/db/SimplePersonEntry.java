@@ -36,7 +36,7 @@ public class SimplePersonEntry extends TableBaseEntry {
         if (getCompany() != null) {
             companyStr = getCompany().toString();
         }
-        return "{" + SimplePersonEntry.class.getSimpleName() + " id:" + getId() + " name:" + mName
+        return "{" + SimplePersonEntry.class.getSimpleName() + " name:" + mName
                 + " age:" + mAge + " company:" + companyStr + "}";
     }
 

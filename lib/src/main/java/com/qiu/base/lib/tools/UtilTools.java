@@ -7,6 +7,8 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -52,5 +54,12 @@ public class UtilTools {
 
     public static String toJson(@NonNull Object obj) {
         return JSON.toJSONString(obj);
+    }
+
+    @NonNull
+    public static <T> Class<T> getClass(@NonNull T t) {
+        Type type = t.getClass().getGenericSuperclass();
+        Type trueType = ((ParameterizedType) type).getActualTypeArguments()[0];
+        return (Class<T>) trueType;
     }
 }
