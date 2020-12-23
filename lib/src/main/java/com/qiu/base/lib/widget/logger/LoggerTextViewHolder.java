@@ -8,8 +8,9 @@ import com.qiu.base.lib.widget.recycler.BaseRecyclerItem;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerViewHolder;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-public class LoggerTextViewHolder extends BaseRecyclerViewHolder {
+public class LoggerTextViewHolder extends BaseRecyclerViewHolder<BaseRecyclerItem> {
 
     public LoggerTextViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -17,6 +18,7 @@ public class LoggerTextViewHolder extends BaseRecyclerViewHolder {
 
     @Override
     public void bindItem(@NonNull BaseRecyclerItem item) {
+        super.bindItem(item);
         if (item instanceof LoggerTextItem) {
             final String text = ((LoggerTextItem) item).getContent();
             final TextView textView = itemView.findViewById(R.id.log_text);
@@ -25,7 +27,7 @@ public class LoggerTextViewHolder extends BaseRecyclerViewHolder {
     }
 
     @Override
-    public void unBindItem() {
-
+    public void unBindItem(@Nullable BaseRecyclerItem item) {
+        super.unBindItem(item);
     }
 }

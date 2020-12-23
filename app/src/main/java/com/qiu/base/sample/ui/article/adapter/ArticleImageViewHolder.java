@@ -10,7 +10,7 @@ import com.qiu.base.sample.R;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class ArticleImageViewHolder extends BaseRecyclerViewHolder {
+public class ArticleImageViewHolder extends BaseRecyclerViewHolder<ArticleImageItem> {
 
     @Nullable
     private final ImageView mImageView;
@@ -21,16 +21,10 @@ public class ArticleImageViewHolder extends BaseRecyclerViewHolder {
     }
 
     @Override
-    public void bindItem(@NonNull BaseRecyclerItem item) {
-        if (item instanceof ArticleImageItem) {
-            if (mImageView != null) {
-                mImageView.setImageBitmap(((ArticleImageItem) item).getBitmap());
-            }
+    public void bindItem(@NonNull ArticleImageItem item) {
+        super.bindItem(item);
+        if (mImageView != null) {
+            mImageView.setImageBitmap(item.getBitmap());
         }
-    }
-
-    @Override
-    public void unBindItem() {
-
     }
 }
