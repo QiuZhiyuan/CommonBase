@@ -1,4 +1,4 @@
-package com.qiu.base.lib.data.db;
+ package com.qiu.base.lib.data.db;
 
 import android.content.ContentValues;
 import android.content.Context;

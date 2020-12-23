@@ -6,7 +6,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public final class SimpleViewHolder extends RecyclerView.ViewHolder {
+public final class SimpleViewHolder extends BaseRecyclerViewHolder {
     public SimpleViewHolder(@NonNull Context context) {
         super(new View(context));
     }

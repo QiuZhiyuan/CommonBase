@@ -7,7 +7,9 @@ import com.qiu.base.lib.data.ListEntry;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class BaseRecyclerAdapter extends RecyclerView.Adapter
+import java.util.List;
+
+public class BaseRecyclerAdapter extends RecyclerView.Adapter<BaseRecyclerViewHolder>
         implements ListEntry.ListChangeListener {
 
     @NonNull
@@ -20,8 +22,8 @@ public class BaseRecyclerAdapter extends RecyclerView.Adapter
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder viewHolder =
+    public BaseRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        BaseRecyclerViewHolder viewHolder =
                 mSection.getViewHolderFactory().createViewHolder(parent, viewType);
         if (viewHolder != null) {
             return viewHolder;
@@ -31,18 +33,14 @@ public class BaseRecyclerAdapter extends RecyclerView.Adapter
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof BaseRecyclerViewHolder) {
-            final BaseRecyclerItem item = mSection.getItem(position);
-            ((BaseRecyclerViewHolder) holder).onBind(item);
-        }
+    public void onBindViewHolder(@NonNull BaseRecyclerViewHolder holder, int position) {
+        final BaseRecyclerItem item = mSection.getItem(position);
+        holder.onBind(item);
     }
 
     @Override
-    public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
-        if (holder instanceof BaseRecyclerViewHolder) {
-            ((BaseRecyclerViewHolder) holder).unBind();
-        }
+    public void onViewRecycled(@NonNull BaseRecyclerViewHolder holder) {
+        holder.unBind();
     }
 
     @Override
