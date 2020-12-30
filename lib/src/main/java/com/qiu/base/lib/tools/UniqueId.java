@@ -6,7 +6,7 @@ import java.util.Set;
 public class UniqueId {
 
     private static Set<Integer> sUniqueIdPool = new HashSet<>();
-    private static int count = 0;
+    private static int count = Integer.MIN_VALUE;
 
     private UniqueId() {
     }
