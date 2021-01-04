@@ -81,8 +81,31 @@ public class ListEntry<T> {
         return result;
     }
 
+    public void update(int index, @NonNull T t) {
+        if (contain(index)) {
+            mList.set(index, t);
+        }
+    }
+
+    @Nullable
+    public T get(int index) {
+        if (contain(index)) {
+            return mList.get(index);
+        } else {
+            return null;
+        }
+    }
+
+    public int size() {
+        return mList.size();
+    }
+
     public boolean contains(@NonNull T t) {
         return mList.contains(t);
+    }
+
+    public boolean contain(int index) {
+        return index >= 0 && index < mList.size();
     }
 
     public void clear() {
