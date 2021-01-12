@@ -49,7 +49,6 @@ public class TableSQLiteOpenHelper<T extends TableBaseEntry> extends SQLiteOpenH
             @Nullable SQLiteDatabase.CursorFactory factory, int version,
             @NonNull Class<T> clz) {
         super(context, name, factory, version);
-        Logger.d(TAG, clz.toString());
         mClz = clz;
         mTableName = getTableName();
         mColumnEntryList = getColumnList();

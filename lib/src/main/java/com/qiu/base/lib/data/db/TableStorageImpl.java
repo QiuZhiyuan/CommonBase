@@ -65,8 +65,13 @@ public abstract class TableStorageImpl {
         query(callback, clz, null);
     }
 
+    protected void exeSql(@NonNull String sql, @NonNull final Class<? extends TableBaseEntry> clz) {
+        getSQLiteHelper(clz).getWritableDatabase().execSQL(sql);
+    }
+
     @NonNull
-    private TableSQLiteOpenHelper<?> getSQLiteHelper(@NonNull Class<? extends TableBaseEntry> clz) {
+    protected TableSQLiteOpenHelper<?> getSQLiteHelper(
+            @NonNull Class<? extends TableBaseEntry> clz) {
         TableSQLiteOpenHelper<?> helper = mSQLiteHelperMap.get(clz);
         if (helper == null) {
             helper = new TableSQLiteOpenHelper<>(App.i().getApplicationContext(), getDataBaseName(),

@@ -9,6 +9,9 @@ import android.os.Build;
 import android.telephony.TelephonyManager;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.qiu.base.lib.tools.Logger;
 
 import java.security.Permission;
 
@@ -55,5 +58,20 @@ public class App {
         return mApplication.getSharedPreferences(name, Context.MODE_PRIVATE);
     }
 
+    @Nullable
+    public Object getSystemService(@NonNull String name){
+        return mApplication.getSystemService(name);
+    }
+
+    @Nullable
+    public Context getContextByPackageName(@NonNull String packageName) {
+        Context context = null;
+        try {
+            context = mApplication.createPackageContext(packageName, Context.CONTEXT_INCLUDE_CODE | Context.CONTEXT_IGNORE_SECURITY);
+        } catch (PackageManager.NameNotFoundException e) {
+            Logger.e("getContextByPackageName");
+        }
+        return context;
+    }
 
 }

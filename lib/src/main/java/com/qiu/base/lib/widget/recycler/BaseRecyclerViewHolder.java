@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-public abstract class BaseRecyclerViewHolder<T extends BaseRecyclerItem>
+public class BaseRecyclerViewHolder<T extends BaseRecyclerItem>
         extends RecyclerView.ViewHolder implements
         BaseRecyclerItem.UpdateViewListener {
 
