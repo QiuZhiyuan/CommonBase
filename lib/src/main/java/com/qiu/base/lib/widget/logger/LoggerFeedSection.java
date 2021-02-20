@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 
 import com.qiu.base.lib.R;
 import com.qiu.base.lib.tools.UniqueId;
+import com.qiu.base.lib.widget.recycler.BaseRecyclerItem;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerSection;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerViewHolder;
 import com.qiu.base.lib.widget.recycler.ViewHolderFactory;
@@ -19,7 +20,8 @@ public class LoggerFeedSection extends BaseRecyclerSection {
 
         @NonNull
         @Override
-        public BaseRecyclerViewHolder createViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public BaseRecyclerViewHolder<? extends BaseRecyclerItem> createViewHolder(
+                @NonNull ViewGroup parent, int viewType) {
             if (viewType == TEXT_ITEM_ID) {
                 final View view = getLayoutById(parent, R.layout.logger_item);
                 return new LoggerTextViewHolder(view);

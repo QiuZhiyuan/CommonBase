@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
@@ -42,20 +43,15 @@ public class MobileInfoTools {
     }
 
     @NonNull
-    public static List<PackageInfo> getInstalledAppList() {
-        final List<PackageInfo> infoList = new ArrayList<>();
-        final PackageManager packageManager = App.i().getApplicationContext().getPackageManager();
+    public static List<PackageEntry> getInstalledAppList() {
+        final List<PackageEntry> infoList = new ArrayList<>();
+        final PackageManager packageManager = App.i().getPackageManager();
         List<PackageInfo> packageInfoList = packageManager.getInstalledPackages(0);
         for (PackageInfo info : packageInfoList) {
             if ((info.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
-                infoList.add(info);
+                infoList.add(new PackageEntry(info));
             }
         }
         return infoList;
-    }
-
-    @NonNull
-    public static String getAppName(@NonNull PackageInfo packageInfo) {
-        return packageInfo.applicationInfo.loadLabel(App.i().getPackageManager()).toString();
     }
 }

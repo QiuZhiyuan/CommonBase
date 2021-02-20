@@ -25,6 +25,7 @@
         <activity android:name=".editable.EditableActivity" />
         <activity android:name=".ui.DataBaseActivity" />
         <activity android:name=".ui.NetworkActivity" />
+        <activity android:name=".ui.SettingActivity" />
 
         <service
             android:name=".aidl.AIDLService"

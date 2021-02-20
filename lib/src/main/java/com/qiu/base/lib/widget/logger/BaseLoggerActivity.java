@@ -4,15 +4,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.qiu.base.lib.data.ListEntry;
-import com.qiu.base.lib.widget.BaseActivity;
-import com.qiu.base.lib.widget.logger.LoggerFeedSection;
-import com.qiu.base.lib.widget.recycler.BaseRecyclerAdapter;
-import com.qiu.base.lib.widget.recycler.BaseRecyclerView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.qiu.base.lib.data.ListEntry;
+import com.qiu.base.lib.widget.BaseActivity;
+import com.qiu.base.lib.widget.recycler.BaseRecyclerView;
 
 public abstract class BaseLoggerActivity extends BaseActivity {
 
@@ -26,14 +24,13 @@ public abstract class BaseLoggerActivity extends BaseActivity {
 
     private void prepareLoggerView() {
         final BaseRecyclerView loggerView = getLoggerView();
-        final BaseRecyclerAdapter adapter = new BaseRecyclerAdapter(mSection);
         loggerView.setLayoutManager(new LinearLayoutManager(this));
-        loggerView.setAdapter(adapter);
+        loggerView.setAdapter(mSection.createDefaultAdapter());
         if (isAutoScroll()) {
             mSection.setDataChangeListener(new ListEntry.ListChangeListener() {
                 @Override
                 public void onListChanged() {
-                    loggerView.scrollToPosition(adapter.getItemCount() - 1);
+                    loggerView.scrollToPosition(mSection.getItemCount() - 1);
                 }
             });
         }

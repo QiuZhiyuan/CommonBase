@@ -11,6 +11,7 @@ import com.qiu.base.sample.aidl.AidlReceiverActivity;
 import com.qiu.base.sample.ui.DataBaseActivity;
 import com.qiu.base.sample.ui.GalleryActivity;
 import com.qiu.base.sample.ui.KeepAliveActivity;
+import com.qiu.base.sample.ui.SettingActivity;
 import com.qiu.base.sample.ui.SystemStateActivity;
 import com.qiu.base.sample.ui.article.ArticleFeedActivity;
 
@@ -56,7 +57,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 openActivity(DataBaseActivity.class);
                 break;
             case R.id.show_net:
-
+                break;
+            case R.id.show_setting:
+                openActivity(SettingActivity.class);
                 break;
         }
     }

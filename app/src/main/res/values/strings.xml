@@ -20,5 +20,6 @@
     <string name="query_entry">Query Entry</string>
     <string name="show_database">Show DataBase</string>
     <string name="show_network">Show Network</string>
+    <string name="show_setting">Show Setting</string>
 
 </resources>

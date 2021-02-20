@@ -9,6 +9,8 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.qiu.base.lib.impl.Callback;
+
 public class ListEntry<T> {
 
     public interface ListChangeListener {
@@ -38,7 +40,7 @@ public class ListEntry<T> {
         return mList;
     }
 
-    protected void callListChanged() {
+    public void callListChanged() {
         if (mListener != null) {
             mListener.onListChanged();
         }
@@ -49,24 +51,55 @@ public class ListEntry<T> {
         return mList.iterator();
     }
 
+    public void iteration(@NonNull Callback<T> onCall) {
+        Iterator<T> iterator = getIterator();
+        while (iterator.hasNext()) {
+            onCall.onCall(iterator.next());
+        }
+    }
+
     public void add(@NonNull T item) {
+        add(item, true);
+    }
+
+    public void add(@NonNull T item, boolean update) {
         mList.add(item);
-        callListChanged();
+        if (update) {
+            callListChanged();
+        }
     }
 
     public void add(int index, @NonNull T element) {
+        add(index, element, true);
+    }
+
+    public void add(int index, @NonNull T element, boolean update) {
         mList.add(index, element);
-        callListChanged();
+        if (update) {
+            callListChanged();
+        }
     }
 
     public void addAll(@NonNull Collection<T> elements) {
+        addAll(elements, true);
+    }
+
+    public void addAll(@NonNull Collection<T> elements, boolean update) {
         mList.addAll(elements);
-        callListChanged();
+        if (update) {
+            callListChanged();
+        }
     }
 
     public void addAll(int index, @NonNull Collection<T> elements) {
+        addAll(index, elements, true);
+    }
+
+    public void addAll(int index, @NonNull Collection<T> elements, boolean update) {
         mList.addAll(index, elements);
-        callListChanged();
+        if (update) {
+            callListChanged();
+        }
     }
 
     public boolean remove(@NonNull T element) {

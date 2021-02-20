@@ -2,12 +2,13 @@ package com.qiu.base.lib.widget.recycler;
 
 import com.qiu.base.lib.data.ListEntry;
 
+import java.sql.ClientInfoStatus;
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 
-public abstract class BaseRecyclerSection {
+public abstract class BaseRecyclerSection<T extends BaseRecyclerItem> {
 
     public enum State {
         START,
@@ -21,7 +22,7 @@ public abstract class BaseRecyclerSection {
     }
 
     @NonNull
-    private List<SectionStateListener> mListeners = new ArrayList<>();
+    private final List<SectionStateListener> mListeners = new ArrayList<>();
     @NonNull
     private State mState;
 
@@ -30,13 +31,13 @@ public abstract class BaseRecyclerSection {
     }
 
     @NonNull
-    protected final ListEntry<BaseRecyclerItem> mListEntry = new ListEntry<>();
+    protected final ListEntry<T> mListEntry = new ListEntry<>();
 
     public void setDataChangeListener(@NonNull ListEntry.ListChangeListener listener) {
         mListEntry.setListener(listener);
     }
 
-    int getItemCount() {
+    public int getItemCount() {
         return getItems().size();
     }
 
@@ -44,13 +45,18 @@ public abstract class BaseRecyclerSection {
         return getItems().get(position).getId();
     }
 
-    BaseRecyclerItem getItem(int position) {
+    T getItem(int position) {
         return getItems().get(position);
     }
 
     @NonNull
-    protected List<BaseRecyclerItem> getItems() {
+    protected List<T> getItems() {
         return mListEntry.getList();
+    }
+
+    protected void replaceAllItem(@NonNull List<T> itemList) {
+        mListEntry.clear();
+        mListEntry.addAll(itemList);
     }
 
     @NonNull
@@ -81,5 +87,10 @@ public abstract class BaseRecyclerSection {
     }
 
     public void onDestroy() {
+    }
+
+    @NonNull
+    public BaseRecyclerAdapter createDefaultAdapter() {
+        return new BaseRecyclerAdapter(this);
     }
 }

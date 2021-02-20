@@ -11,8 +11,8 @@ import androidx.annotation.Nullable;
 public abstract class ViewHolderFactory {
 
     @Nullable
-    public abstract BaseRecyclerViewHolder createViewHolder(@NonNull ViewGroup parent,
-            int viewType);
+    public abstract BaseRecyclerViewHolder<? extends BaseRecyclerItem> createViewHolder(
+            @NonNull ViewGroup parent, int viewType);
 
     @NonNull
     protected View getLayoutById(@NonNull ViewGroup parent, @LayoutRes int id) {

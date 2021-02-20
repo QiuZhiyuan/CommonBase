@@ -57,9 +57,8 @@ public class UtilTools {
     }
 
     @NonNull
-    public static <T> Class<T> getClass(@NonNull T t) {
+    public static <T> Type getClass(@NonNull T t) {
         Type type = t.getClass().getGenericSuperclass();
-        Type trueType = ((ParameterizedType) type).getActualTypeArguments()[0];
-        return (Class<T>) trueType;
+        return ((ParameterizedType) type).getActualTypeArguments()[0];
     }
 }

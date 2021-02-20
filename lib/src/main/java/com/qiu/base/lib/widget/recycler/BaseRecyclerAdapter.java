@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class BaseRecyclerAdapter extends RecyclerView.Adapter<BaseRecyclerViewHolder>
+public class BaseRecyclerAdapter
+        extends RecyclerView.Adapter<BaseRecyclerViewHolder<BaseRecyclerItem>>
         implements ListEntry.ListChangeListener {
 
     @NonNull
@@ -23,7 +24,7 @@ public class BaseRecyclerAdapter extends RecyclerView.Adapter<BaseRecyclerViewHo
     @NonNull
     @Override
     public BaseRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        BaseRecyclerViewHolder viewHolder =
+        BaseRecyclerViewHolder<? extends BaseRecyclerItem> viewHolder =
                 mSection.getViewHolderFactory().createViewHolder(parent, viewType);
         if (viewHolder != null) {
             return viewHolder;
@@ -33,7 +34,8 @@ public class BaseRecyclerAdapter extends RecyclerView.Adapter<BaseRecyclerViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseRecyclerViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BaseRecyclerViewHolder<BaseRecyclerItem> holder,
+            int position) {
         final BaseRecyclerItem item = mSection.getItem(position);
         holder.onBind(item);
     }
