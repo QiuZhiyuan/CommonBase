@@ -134,7 +134,7 @@ public abstract class ConfigProvider {
         sSavableConfigSet.add(config);
     }
 
-    protected void appendConfigs(@NonNull AbsConfig<?>... configs) {
+    protected void addSavableConfigs(@NonNull AbsConfig<?>... configs) {
         sSavableConfigSet.addAll(Arrays.asList(configs));
     }
 
