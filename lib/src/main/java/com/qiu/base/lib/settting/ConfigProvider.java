@@ -130,7 +130,7 @@ public abstract class ConfigProvider {
     @NonNull
     protected abstract String getStorageKey();
 
-    protected void appendConfig(@NonNull AbsConfig<?> config) {
+    protected void addSavableConfig(@NonNull AbsConfig<?> config) {
         sSavableConfigSet.add(config);
     }
 

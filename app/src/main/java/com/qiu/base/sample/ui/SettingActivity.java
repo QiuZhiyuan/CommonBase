@@ -28,10 +28,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         private volatile static SimpleConfigHelper sInstance;
 
         private SimpleConfigHelper() {
-            appendConfig(STRING_CONFIG);
-            appendConfig(INT_CONFIG);
-            appendConfig(BOOLEAN_CONFIG);
-            appendConfig(LONG_CONFIG);
+            addSavableConfig(STRING_CONFIG);
+            addSavableConfig(INT_CONFIG);
+            addSavableConfig(BOOLEAN_CONFIG);
+            addSavableConfig(LONG_CONFIG);
         }
 
         @NonNull
