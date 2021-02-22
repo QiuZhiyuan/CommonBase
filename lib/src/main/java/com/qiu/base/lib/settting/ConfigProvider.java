@@ -125,16 +125,16 @@ public abstract class ConfigProvider {
         }
     }
 
-    private static final Set<AbsConfig<?>> sSavableConfigSet = new HashSet<>();
+    private final Set<AbsConfig<?>> sSavableConfigSet = new HashSet<>();
 
     @NonNull
     protected abstract String getStorageKey();
 
-    protected static void appendConfig(@NonNull AbsConfig<?> config) {
+    protected void appendConfig(@NonNull AbsConfig<?> config) {
         sSavableConfigSet.add(config);
     }
 
-    protected static void appendConfigs(@NonNull AbsConfig<?>... configs) {
+    protected void appendConfigs(@NonNull AbsConfig<?>... configs) {
         sSavableConfigSet.addAll(Arrays.asList(configs));
     }
 
