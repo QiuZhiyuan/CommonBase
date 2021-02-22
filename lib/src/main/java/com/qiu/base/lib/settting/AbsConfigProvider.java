@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class ConfigProvider {
+public abstract class AbsConfigProvider {
 
     private static final String TAG = "config_helper";
 
@@ -31,7 +31,7 @@ public abstract class ConfigProvider {
         void setValue(T value);
     }
 
-    public static abstract class AbsConfig<T extends Serializable> implements KeyConfig<T> {
+    public static abstract class AbsConfig<T> implements KeyConfig<T> {
 
         private static final String TAG = "abs_config";
 
@@ -90,38 +90,6 @@ public abstract class ConfigProvider {
         public void setValue(T value) {
             mValue = value;
             mIsInit = true;
-        }
-    }
-
-    public static class StringConfig extends AbsConfig<String> {
-
-        public StringConfig(@NonNull String key, @Nullable String defValue) {
-            super(key, defValue);
-        }
-
-        public StringConfig(@NonNull String key, @StringRes int defId) {
-            super(key, App.i().getString(defId));
-        }
-    }
-
-    public static class BooleanConfig extends AbsConfig<Boolean> {
-
-        public BooleanConfig(@NonNull String key, @Nullable Boolean defValue) {
-            super(key, defValue);
-        }
-    }
-
-    public static class IntConfig extends AbsConfig<Integer> {
-
-        public IntConfig(@NonNull String key, @Nullable Integer defValue) {
-            super(key, defValue);
-        }
-    }
-
-    public static class LongConfig extends AbsConfig<Long> {
-
-        public LongConfig(@NonNull String key, @Nullable Long defValue) {
-            super(key, defValue);
         }
     }
 

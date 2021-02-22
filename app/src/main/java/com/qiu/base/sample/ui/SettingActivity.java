@@ -6,14 +6,49 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
-import com.qiu.base.lib.settting.ConfigProvider;
+import com.qiu.base.lib.settting.AbsConfigProvider;
+import com.qiu.base.lib.utils.App;
 import com.qiu.base.lib.widget.BaseActivity;
 import com.qiu.base.sample.R;
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
 
-    private static class SimpleConfigHelper extends ConfigProvider {
+    private static class SimpleConfigProvider extends AbsConfigProvider {
+
+
+        public static class StringConfig extends AbsConfig<String> {
+
+            public StringConfig(@NonNull String key, @Nullable String defValue) {
+                super(key, defValue);
+            }
+
+            public StringConfig(@NonNull String key, @StringRes int defId) {
+                super(key, App.i().getString(defId));
+            }
+        }
+
+        public static class BooleanConfig extends AbsConfig<Boolean> {
+
+            public BooleanConfig(@NonNull String key, @Nullable Boolean defValue) {
+                super(key, defValue);
+            }
+        }
+
+        public static class IntConfig extends AbsConfig<Integer> {
+
+            public IntConfig(@NonNull String key, @Nullable Integer defValue) {
+                super(key, defValue);
+            }
+        }
+
+        public static class LongConfig extends AbsConfig<Long> {
+
+            public LongConfig(@NonNull String key, @Nullable Long defValue) {
+                super(key, defValue);
+            }
+        }
 
         public static final StringConfig STRING_CONFIG =
                 new StringConfig("string_config", "hello_world");
@@ -25,9 +60,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
         public static final LongConfig LONG_CONFIG = new LongConfig("long_config", 0L);
 
-        private volatile static SimpleConfigHelper sInstance;
+        private volatile static SimpleConfigProvider sInstance;
 
-        private SimpleConfigHelper() {
+        private SimpleConfigProvider() {
             addSavableConfig(STRING_CONFIG);
             addSavableConfig(INT_CONFIG);
             addSavableConfig(BOOLEAN_CONFIG);
@@ -35,11 +70,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         }
 
         @NonNull
-        public static SimpleConfigHelper i() {
+        public static SimpleConfigProvider i() {
             if (sInstance == null) {
-                synchronized (SimpleConfigHelper.class) {
+                synchronized (SimpleConfigProvider.class) {
                     if (sInstance == null) {
-                        sInstance = new SimpleConfigHelper();
+                        sInstance = new SimpleConfigProvider();
                     }
                 }
             }
@@ -64,29 +99,29 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onResume() {
         super.onResume();
-        SimpleConfigHelper.i().loadConfigSet();
+        SimpleConfigProvider.i().loadConfigSet();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        SimpleConfigHelper.i().saveConfigSet();
+        SimpleConfigProvider.i().saveConfigSet();
     }
 
     @Override
     public void onClick(View v) {
         final int id = v.getId();
         if (id == R.id.change_configs) {
-            SimpleConfigHelper.STRING_CONFIG.setValue("hello android");
-            SimpleConfigHelper.INT_CONFIG.setValue(100);
-            SimpleConfigHelper.BOOLEAN_CONFIG.setValue(true);
-            SimpleConfigHelper.LONG_CONFIG.setValue(System.currentTimeMillis());
+            SimpleConfigProvider.STRING_CONFIG.setValue("hello android");
+            SimpleConfigProvider.INT_CONFIG.setValue(100);
+            SimpleConfigProvider.BOOLEAN_CONFIG.setValue(true);
+            SimpleConfigProvider.LONG_CONFIG.setValue(System.currentTimeMillis());
         } else if (id == R.id.show_configs) {
             final TextView textView = findViewById(R.id.config_board);
-            textView.setText("string:" + SimpleConfigHelper.STRING_CONFIG.getValue() +
-                    "\nint:" + SimpleConfigHelper.INT_CONFIG.getValue() +
-                    "\nboolean:" + SimpleConfigHelper.BOOLEAN_CONFIG.getValue() +
-                    "\nlong:" + SimpleConfigHelper.LONG_CONFIG.getValue());
+            textView.setText("string:" + SimpleConfigProvider.STRING_CONFIG.getValue() +
+                    "\nint:" + SimpleConfigProvider.INT_CONFIG.getValue() +
+                    "\nboolean:" + SimpleConfigProvider.BOOLEAN_CONFIG.getValue() +
+                    "\nlong:" + SimpleConfigProvider.LONG_CONFIG.getValue());
         }
     }
 }
