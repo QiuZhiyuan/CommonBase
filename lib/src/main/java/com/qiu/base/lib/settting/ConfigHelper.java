@@ -18,12 +18,6 @@ public abstract class ConfigHelper {
     private static final String TAG = "config_helper";
 
     public interface KeyConfig<T> {
-        @NonNull
-        String getKey();
-
-        void parserFromJson(@NonNull JSONObject json);
-
-        void appendToJson(@NonNull JSONObject json);
 
         boolean isInit();
 
@@ -52,13 +46,12 @@ public abstract class ConfigHelper {
         }
 
         @NonNull
-        @Override
-        public String getKey() {
+        String getKey() {
             return mKey;
         }
 
-        @Override
-        public void parserFromJson(@NonNull JSONObject json) {
+        @SuppressWarnings("unchecked")
+        void parserFromJson(@NonNull JSONObject json) {
             try {
                 setValue((T) json.get(getKey()));
             } catch (JSONException e) {
@@ -66,8 +59,7 @@ public abstract class ConfigHelper {
             }
         }
 
-        @Override
-        public void appendToJson(@NonNull JSONObject json) {
+        void appendToJson(@NonNull JSONObject json) {
             try {
                 json.put(mKey, mIsInit ? mValue : mDefValue);
             } catch (JSONException e) {
