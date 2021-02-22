@@ -7,13 +7,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.qiu.base.lib.settting.ConfigHelper;
+import com.qiu.base.lib.settting.ConfigProvider;
 import com.qiu.base.lib.widget.BaseActivity;
 import com.qiu.base.sample.R;
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
 
-    private static class SimpleConfigHelper extends ConfigHelper {
+    private static class SimpleConfigHelper extends ConfigProvider {
 
         public static final StringConfig STRING_CONFIG =
                 new StringConfig("string_config", "hello_world");
@@ -23,15 +23,15 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         public static final BooleanConfig BOOLEAN_CONFIG =
                 new BooleanConfig("boolean_config", false);
 
-        static {
-            sSavableConfigSet.add(STRING_CONFIG);
-            sSavableConfigSet.add(INT_CONFIG);
-            sSavableConfigSet.add(BOOLEAN_CONFIG);
-        }
+        public static final LongConfig LONG_CONFIG = new LongConfig("long_config", 0L);
 
         private volatile static SimpleConfigHelper sInstance;
 
         private SimpleConfigHelper() {
+            appendConfig(STRING_CONFIG);
+            appendConfig(INT_CONFIG);
+            appendConfig(BOOLEAN_CONFIG);
+            appendConfig(LONG_CONFIG);
         }
 
         @NonNull
@@ -80,11 +80,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             SimpleConfigHelper.STRING_CONFIG.setValue("hello android");
             SimpleConfigHelper.INT_CONFIG.setValue(100);
             SimpleConfigHelper.BOOLEAN_CONFIG.setValue(true);
+            SimpleConfigHelper.LONG_CONFIG.setValue(System.currentTimeMillis());
         } else if (id == R.id.show_configs) {
             final TextView textView = findViewById(R.id.config_board);
             textView.setText("string:" + SimpleConfigHelper.STRING_CONFIG.getValue() +
                     "\nint:" + SimpleConfigHelper.INT_CONFIG.getValue() +
-                    "\nboolean:" + SimpleConfigHelper.BOOLEAN_CONFIG.getValue());
+                    "\nboolean:" + SimpleConfigHelper.BOOLEAN_CONFIG.getValue() +
+                    "\nlong:" + SimpleConfigHelper.LONG_CONFIG.getValue());
         }
     }
 }

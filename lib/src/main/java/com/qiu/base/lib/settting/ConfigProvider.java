@@ -2,18 +2,21 @@ package com.qiu.base.lib.settting;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 import com.qiu.base.lib.tools.Logger;
+import com.qiu.base.lib.utils.App;
 import com.qiu.base.lib.utils.KeyStorage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class ConfigHelper {
+public abstract class ConfigProvider {
 
     private static final String TAG = "config_helper";
 
@@ -95,6 +98,10 @@ public abstract class ConfigHelper {
         public StringConfig(@NonNull String key, @Nullable String defValue) {
             super(key, defValue);
         }
+
+        public StringConfig(@NonNull String key, @StringRes int defId) {
+            super(key, App.i().getString(defId));
+        }
     }
 
     public static class BooleanConfig extends AbsConfig<Boolean> {
@@ -111,10 +118,25 @@ public abstract class ConfigHelper {
         }
     }
 
-    protected static Set<AbsConfig<?>> sSavableConfigSet = new HashSet<>();
+    public static class LongConfig extends AbsConfig<Long> {
+
+        public LongConfig(@NonNull String key, @Nullable Long defValue) {
+            super(key, defValue);
+        }
+    }
+
+    private static final Set<AbsConfig<?>> sSavableConfigSet = new HashSet<>();
 
     @NonNull
     protected abstract String getStorageKey();
+
+    protected static void appendConfig(@NonNull AbsConfig<?> config) {
+        sSavableConfigSet.add(config);
+    }
+
+    protected static void appendConfigs(@NonNull AbsConfig<?>... configs) {
+        sSavableConfigSet.addAll(Arrays.asList(configs));
+    }
 
     public void saveConfigSet() {
         final JSONObject jsonObject = new JSONObject();
