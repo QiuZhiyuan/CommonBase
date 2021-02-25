@@ -30,5 +30,6 @@
         <service
             android:name=".aidl.AIDLService"
             android:process="com.qiu.aidl.service" />
+        <service android:name=".ui.ForegroundService" />
     </application>
 </manifest>
