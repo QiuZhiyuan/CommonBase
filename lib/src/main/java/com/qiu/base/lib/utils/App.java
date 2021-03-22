@@ -8,7 +8,11 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Point;
 import android.os.Build;
+import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -108,5 +112,21 @@ public class App {
 
     public void startActivity(@NonNull Intent intent) {
         mActivityManager.startActivity(intent);
+    }
+
+    @NonNull
+    public LayoutInflater getLayoutInflater() {
+        return LayoutInflater.from(mApplication);
+    }
+
+    @NonNull
+    public Point getScreenSize() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        final WindowManager windowManager =
+                (WindowManager) mApplication.getSystemService(Context.WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels;
+        int height = displayMetrics.heightPixels;
+        return new Point(width, height);
     }
 }

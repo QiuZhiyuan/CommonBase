@@ -31,5 +31,15 @@
             android:name=".aidl.AIDLService"
             android:process="com.qiu.aidl.service" />
         <service android:name=".ui.ForegroundService" />
+
+        <receiver android:name=".test.MyAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.bwkj.qcxbm.widget.UPDATE_ALL" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_widget_provider" />
+        </receiver>
     </application>
 </manifest>

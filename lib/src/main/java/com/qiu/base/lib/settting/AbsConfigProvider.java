@@ -12,8 +12,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public abstract class AbsConfigProvider {
@@ -26,9 +28,10 @@ public abstract class AbsConfigProvider {
 
         void reset();
 
+        @Nullable
         T getValue();
 
-        void setValue(T value);
+        void setValue(@Nullable T value);
     }
 
     public static abstract class AbsConfig<T> implements KeyConfig<T> {
@@ -81,18 +84,32 @@ public abstract class AbsConfigProvider {
             mIsInit = false;
         }
 
+        @Nullable
         @Override
         public T getValue() {
             return mIsInit ? mValue : mDefValue;
         }
 
+        @Nullable
+        public T getDefValue() {
+            return mDefValue;
+        }
+
         @Override
-        public void setValue(T value) {
+        public void setValue(@Nullable T value) {
             mValue = value;
             mIsInit = true;
         }
+
+        public boolean isChanged() {
+            if (mDefValue == null) {
+                return mValue != null;
+            }
+            return !mDefValue.equals(mValue);
+        }
     }
 
+    @NonNull
     private final Set<AbsConfig<?>> sSavableConfigSet = new HashSet<>();
 
     @NonNull
@@ -128,5 +145,10 @@ public abstract class AbsConfigProvider {
         } catch (JSONException e) {
             Logger.e(TAG, e.toString());
         }
+    }
+
+    @NonNull
+    public List<AbsConfig<?>> getConfigList() {
+        return new ArrayList<>(sSavableConfigSet);
     }
 }

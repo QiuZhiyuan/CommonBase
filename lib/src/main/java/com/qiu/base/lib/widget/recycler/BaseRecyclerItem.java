@@ -12,11 +12,11 @@ public abstract class BaseRecyclerItem {
     @Nullable
     private UpdateViewListener mUpdateViewListener;
 
-    void setUpdateViewListener(@NonNull UpdateViewListener listener) {
+    void setUpdateViewListener(@Nullable UpdateViewListener listener) {
         mUpdateViewListener = listener;
     }
 
-    public void onDataUpdate() {
+    public void callViewUpdate() {
         if (mUpdateViewListener != null) {
             mUpdateViewListener.onDataUpdate();
         }
