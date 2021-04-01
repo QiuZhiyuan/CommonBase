@@ -100,13 +100,6 @@ public abstract class AbsConfigProvider {
             mValue = value;
             mIsInit = true;
         }
-
-        public boolean isChanged() {
-            if (mDefValue == null) {
-                return mValue != null;
-            }
-            return !mDefValue.equals(mValue);
-        }
     }
 
     @NonNull
