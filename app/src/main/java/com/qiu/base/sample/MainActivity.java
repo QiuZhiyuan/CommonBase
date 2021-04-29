@@ -7,16 +7,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.qiu.base.sample.aidl.AidlReceiverActivity;
 import com.qiu.base.sample.ui.DataBaseActivity;
 import com.qiu.base.sample.ui.GalleryActivity;
 import com.qiu.base.sample.ui.KeepAliveActivity;
+import com.qiu.base.sample.ui.PageFrameActivity;
 import com.qiu.base.sample.ui.SettingActivity;
 import com.qiu.base.sample.ui.SystemStateActivity;
 import com.qiu.base.sample.ui.article.ArticleFeedActivity;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
@@ -38,6 +39,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.show_test_page:
+                openActivity(PageFrameActivity.class);
+                break;
             case R.id.show_gallery:
                 openActivity(GalleryActivity.class);
                 break;
