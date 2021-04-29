@@ -64,7 +64,6 @@ public class ActivityManager implements Application.ActivityLifecycleCallbacks {
             activity = null;
         }
         if (activity == null) {
-
             Logger.e(TAG, "Get active activity is null");
         }
         return activity;
@@ -74,6 +73,8 @@ public class ActivityManager implements Application.ActivityLifecycleCallbacks {
         final Activity activity = getActiveActivity();
         if (activity != null) {
             activity.startActivity(intent);
+        } else {
+            App.i().getApplicationContext().startActivity(intent);
         }
     }
 }

@@ -19,6 +19,11 @@ public class Logger {
         Log.d(TAG + " " + tag, msg);
     }
 
+    public static void e(@NonNull String tag, @NonNull Exception e) {
+        e(tag, e.toString());
+        e.printStackTrace();
+    }
+
     public static void e(@NonNull String msg) {
         e(TAG, msg);
     }

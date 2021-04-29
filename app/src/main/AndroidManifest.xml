@@ -26,6 +26,7 @@
         <activity android:name=".ui.DataBaseActivity" />
         <activity android:name=".ui.NetworkActivity" />
         <activity android:name=".ui.SettingActivity" />
+        <activity android:name=".ui.PageFrameActivity" />
 
         <service
             android:name=".aidl.AIDLService"

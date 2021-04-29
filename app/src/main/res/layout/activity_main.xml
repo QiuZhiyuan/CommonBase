@@ -10,6 +10,11 @@
         android:orientation="vertical">
 
         <Button
+            android:id="@+id/show_test_page"
+            style="@style/BaseIndexButton"
+            android:text="@string/test" />
+
+        <Button
             android:id="@+id/show_gallery"
             style="@style/BaseIndexButton"
             android:text="@string/show_gallery" />
