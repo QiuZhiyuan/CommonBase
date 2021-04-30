@@ -5,8 +5,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.qiu.base.lib.tools.Logger;
-
 public class PageFrameAdapter extends RecyclerView.Adapter<PageFrameItemViewHolder>
         implements ItemListChangeListener {
 
@@ -77,13 +75,17 @@ public class PageFrameAdapter extends RecyclerView.Adapter<PageFrameItemViewHold
 
     @Override
     public void onItemRangeRemoved(int index, int itemCount) {
-        Logger.d("onItemRangeRemoved:" + index + " " + itemCount);
         notifyItemRangeRemoved(index, itemCount);
     }
 
     @Override
     public void onItemRangeInsert(int index, int itemCount) {
         notifyItemRangeInserted(index, itemCount);
+    }
+
+    @Override
+    public void onItemRangeChange(int index, int itemCount) {
+        notifyItemRangeChanged(index, itemCount);
     }
 
     @Override

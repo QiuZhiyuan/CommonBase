@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.qiu.base.lib.utils.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -51,7 +52,7 @@ public abstract class PageFrameSection {
     }
 
     public final void addItem(int index, @NonNull PageFrameItem item) {
-        addItemList(index, CollectionUtils.createSingleItemList(item));
+        addItemList(index, Collections.singletonList(item));
     }
 
     public final void addItemList(@NonNull List<PageFrameItem> itemList) {
@@ -76,10 +77,10 @@ public abstract class PageFrameSection {
     }
 
     public final void removeItem(int index) {
-        removeItem(index, 1);
+        removeItemList(index, 1);
     }
 
-    public final void removeItem(int index, int itemCount) {
+    public final void removeItemList(int index, int itemCount) {
         if (index < 0 || index >= mItems.size() || itemCount < 0) {
             throw new IndexOutOfBoundsException(
                     "Invalid item index " + index + " itemCount " + itemCount + " items count "
@@ -92,6 +93,28 @@ public abstract class PageFrameSection {
         mItems.removeAll(subList);
         for (ItemListChangeListener listener : mItemListChangeListenerSet) {
             listener.onItemRangeRemoved(index, itemCount);
+        }
+    }
+
+    public final void updateItem(int index, @NonNull PageFrameItem item) {
+        updateItemList(index, CollectionUtils.singletonList(item));
+    }
+
+    public final void updateItemList(int index, @NonNull List<PageFrameItem> itemList) {
+        if (index < 0 || index >= mItems.size()) {
+            throw new IndexOutOfBoundsException(
+                    "Invalid item index " + index + " items count "
+                            + mItems.size());
+        }
+        int itemCount = itemList.size();
+        if (index + itemCount >= mItems.size()) {
+            itemCount = mItems.size() - index;
+        }
+        final List<PageFrameItem> subItems = mItems.subList(index, index + itemCount);
+        mItems.removeAll(subItems);
+        mItems.addAll(index, itemList);
+        for (ItemListChangeListener listener : mItemListChangeListenerSet) {
+            listener.onItemRangeChange(index, itemList.size());
         }
     }
 

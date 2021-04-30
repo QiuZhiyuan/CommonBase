@@ -8,11 +8,15 @@ import androidx.annotation.Nullable;
 
 import com.qiu.base.lib.eventbus.EventDispatcher;
 import com.qiu.base.lib.tools.Logger;
+import com.qiu.base.lib.utils.CollectionUtils;
 import com.qiu.base.lib.widget.frame.PageFrameItem;
 import com.qiu.base.lib.widget.frame.PageFrameItemViewHolder;
 import com.qiu.base.sample.R;
-import com.qiu.base.sample.ui.page_frame.event.AddPageFrameItemEvent;
+import com.qiu.base.sample.ui.page_frame.event.AddItemListEvent;
 import com.qiu.base.sample.ui.page_frame.event.RemoveItemRangeEvent;
+import com.qiu.base.sample.ui.page_frame.event.UpdateItemListEvent;
+
+import java.util.List;
 
 public class SimplePageFrameItemViewHolder extends PageFrameItemViewHolder {
 
@@ -27,9 +31,13 @@ public class SimplePageFrameItemViewHolder extends PageFrameItemViewHolder {
             public void onClick(View v) {
                 if (mItem instanceof SimplePageFrameItem) {
                     Logger.d("click:" + ((SimplePageFrameItem) mItem).text);
-                    EventDispatcher.post(new AddPageFrameItemEvent(
-                            new SimplePageFrameItem(((SimplePageFrameItem) mItem).text + " copy"),
-                            getAdapterPosition() + 1));
+                    final String text1 = ((SimplePageFrameItem) mItem).text + " copy1";
+                    final String text2 = ((SimplePageFrameItem) mItem).text + " copy2";
+                    final List<SimplePageFrameItem> itemList = CollectionUtils
+                            .createList(new SimplePageFrameItem(text1),
+                                    new SimplePageFrameItem(text2));
+//                    EventDispatcher.post(new AddItemListEvent(itemList, getAdapterPosition() + 1));
+                    EventDispatcher.post(new UpdateItemListEvent(itemList, getAdapterPosition()));
                 }
             }
         });
@@ -38,8 +46,7 @@ public class SimplePageFrameItemViewHolder extends PageFrameItemViewHolder {
             public boolean onLongClick(View v) {
                 if (mItem instanceof SimplePageFrameItem) {
                     Logger.d("long click:" + ((SimplePageFrameItem) mItem).text);
-//                    EventDispatcher.post(new RemovePageFrameItemEvent(mItem));
-                    EventDispatcher.post(new RemoveItemRangeEvent(getAdapterPosition(), 3));
+                    EventDispatcher.post(new RemoveItemRangeEvent(getAdapterPosition(), 1));
                 }
                 return true;
             }
