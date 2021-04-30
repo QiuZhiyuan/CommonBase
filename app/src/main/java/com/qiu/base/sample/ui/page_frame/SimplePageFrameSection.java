@@ -79,16 +79,12 @@ public class SimplePageFrameSection extends PageFrameSection {
         addItemList(items);
     }
 
-    @Override
     public void onAttached() {
-        super.onAttached();
         Logger.d("section onAttached");
         EventDispatcher.register(mEventHandler);
     }
 
-    @Override
     public void onDetached() {
-        super.onDetached();
         Logger.d("section onDetached");
         EventDispatcher.unregister(mEventHandler);
     }

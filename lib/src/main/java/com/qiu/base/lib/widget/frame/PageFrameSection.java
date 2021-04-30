@@ -21,12 +21,6 @@ public abstract class PageFrameSection {
         super();
     }
 
-    public void onAttached() {
-    }
-
-    public void onDetached() {
-    }
-
     @NonNull
     public PageFrameItem getItem(int index) {
         if (index < 0 || index >= mItems.size()) {

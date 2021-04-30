@@ -62,14 +62,12 @@ public class PageFrameAdapter extends RecyclerView.Adapter<PageFrameItemViewHold
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        mSection.onAttached();
         mSection.addItemListChangeObserver(this);
     }
 
     @Override
     public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onDetachedFromRecyclerView(recyclerView);
-        mSection.onDetached();
         mSection.removeItemListChangeObserver(this);
     }
 
