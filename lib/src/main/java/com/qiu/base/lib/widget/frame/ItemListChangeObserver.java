@@ -1,6 +1,6 @@
 package com.qiu.base.lib.widget.frame;
 
-public interface ItemListChangeListener {
+public interface ItemListChangeObserver {
 
     void onItemRangeRemoved(int index, int itemCount);
 

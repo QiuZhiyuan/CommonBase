@@ -15,7 +15,7 @@ public abstract class PageFrameSection {
     @NonNull
     private final List<PageFrameItem> mItems = new ArrayList<>();
     @NonNull
-    private final Set<ItemListChangeListener> mItemListChangeListenerSet = new HashSet<>();
+    private final Set<ItemListChangeObserver> mItemListChangeObserverSet = new HashSet<>();
 
     public PageFrameSection() {
         super();
@@ -36,15 +36,15 @@ public abstract class PageFrameSection {
         return mItems.get(index);
     }
 
-    public final void addItemListChangeListener(
-            @NonNull ItemListChangeListener listChangeListener) {
-        mItemListChangeListenerSet.add(listChangeListener);
-        listChangeListener.onItemListSync();
+    public final void addItemListChangeObserver(
+            @NonNull ItemListChangeObserver itemListChangeObserver) {
+        mItemListChangeObserverSet.add(itemListChangeObserver);
+        itemListChangeObserver.onItemListSync();
     }
 
-    public final void removeItemListChangeListener(
-            @NonNull ItemListChangeListener listChangeListener) {
-        mItemListChangeListenerSet.remove(listChangeListener);
+    public final void removeItemListChangeObserver(
+            @NonNull ItemListChangeObserver itemListChangeObserver) {
+        mItemListChangeObserverSet.remove(itemListChangeObserver);
     }
 
     public final void addItem(@NonNull PageFrameItem item) {
@@ -66,8 +66,8 @@ public abstract class PageFrameSection {
             index = mItems.size();
         }
         mItems.addAll(index, itemList);
-        for (ItemListChangeListener listener : mItemListChangeListenerSet) {
-            listener.onItemRangeInsert(index, itemList.size());
+        for (ItemListChangeObserver observer : mItemListChangeObserverSet) {
+            observer.onItemRangeInsert(index, itemList.size());
         }
     }
 
@@ -91,8 +91,8 @@ public abstract class PageFrameSection {
         }
         List<PageFrameItem> subList = mItems.subList(index, index + itemCount);
         mItems.removeAll(subList);
-        for (ItemListChangeListener listener : mItemListChangeListenerSet) {
-            listener.onItemRangeRemoved(index, itemCount);
+        for (ItemListChangeObserver observer : mItemListChangeObserverSet) {
+            observer.onItemRangeRemoved(index, itemCount);
         }
     }
 
@@ -113,14 +113,14 @@ public abstract class PageFrameSection {
         final List<PageFrameItem> subItems = mItems.subList(index, index + itemCount);
         mItems.removeAll(subItems);
         mItems.addAll(index, itemList);
-        for (ItemListChangeListener listener : mItemListChangeListenerSet) {
-            listener.onItemRangeChange(index, itemList.size());
+        for (ItemListChangeObserver observer : mItemListChangeObserverSet) {
+            observer.onItemRangeChange(index, itemList.size());
         }
     }
 
     public void callItemListChanged() {
-        for (ItemListChangeListener listener : mItemListChangeListenerSet) {
-            listener.onItemListSync();
+        for (ItemListChangeObserver observer : mItemListChangeObserverSet) {
+            observer.onItemListSync();
         }
     }
 

@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class PageFrameAdapter extends RecyclerView.Adapter<PageFrameItemViewHolder>
-        implements ItemListChangeListener {
+        implements ItemListChangeObserver {
 
     @NonNull
     private final PageFrameSection mSection;
@@ -63,14 +63,14 @@ public class PageFrameAdapter extends RecyclerView.Adapter<PageFrameItemViewHold
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         mSection.onAttached();
-        mSection.addItemListChangeListener(this);
+        mSection.addItemListChangeObserver(this);
     }
 
     @Override
     public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onDetachedFromRecyclerView(recyclerView);
         mSection.onDetached();
-        mSection.removeItemListChangeListener(this);
+        mSection.removeItemListChangeObserver(this);
     }
 
     @Override
