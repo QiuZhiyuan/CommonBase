@@ -1,24 +1,15 @@
 package com.qiu.base.lib.utils;
 
-import androidx.annotation.NonNull;
-
-import java.util.Iterator;
-import java.util.function.Predicate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CollectionUtils {
-    private CollectionUtils(){
+    private CollectionUtils() {
     }
 
-    public static <T> boolean removeIf(@NonNull Iterable<T> c, @NonNull Predicate<T> filter) {
-        boolean removed = false;
-        final Iterator<T> each = c.iterator();
-        while (each.hasNext()) {
-            if (filter.test(each.next())) {
-                each.remove();
-                removed = true;
-            }
-        }
-        return removed;
+    public static <E> List<E> createSingleItemList(E item) {
+        final List<E> eList = new ArrayList<>();
+        eList.add(item);
+        return eList;
     }
-
 }

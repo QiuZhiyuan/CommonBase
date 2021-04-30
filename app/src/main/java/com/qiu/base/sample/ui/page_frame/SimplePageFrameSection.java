@@ -13,6 +13,7 @@ import com.qiu.base.lib.widget.frame.PageFrameSection;
 import com.qiu.base.lib.widget.frame.ViewHolderFactory;
 import com.qiu.base.sample.R;
 import com.qiu.base.sample.ui.page_frame.event.AddPageFrameItemEvent;
+import com.qiu.base.sample.ui.page_frame.event.RemoveItemRangeEvent;
 import com.qiu.base.sample.ui.page_frame.event.RemovePageFrameItemEvent;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -31,6 +32,11 @@ public class SimplePageFrameSection extends PageFrameSection {
         @Subscribe
         public void onRemovePageFrameItem(RemovePageFrameItemEvent event) {
             removeItem(event.item);
+        }
+
+        @Subscribe
+        public void onRemoveItemRange(RemoveItemRangeEvent event) {
+            removeItem(event.index, event.itemCount);
         }
     }
 

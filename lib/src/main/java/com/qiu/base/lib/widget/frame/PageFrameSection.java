@@ -2,6 +2,8 @@ package com.qiu.base.lib.widget.frame;
 
 import androidx.annotation.NonNull;
 
+import com.qiu.base.lib.utils.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -44,44 +46,47 @@ public abstract class PageFrameSection {
         mItemListChangeListenerSet.remove(listChangeListener);
     }
 
-    public void addItem(@NonNull PageFrameItem item) {
+    public final void addItem(@NonNull PageFrameItem item) {
         addItem(mItems.size(), item);
     }
 
-    public void addItem(int index, @NonNull PageFrameItem item) {
-        mItems.add(index, item);
-        for (ItemListChangeListener listener : mItemListChangeListenerSet) {
-            listener.onItemRangeInsert(index, 1);
-        }
+    public final void addItem(int index, @NonNull PageFrameItem item) {
+        addItemList(index, CollectionUtils.createSingleItemList(item));
     }
 
-    public void addItemList(@NonNull List<PageFrameItem> itemList) {
+    public final void addItemList(@NonNull List<PageFrameItem> itemList) {
         addItemList(mItems.size(), itemList);
     }
 
-    public void addItemList(int index, @NonNull List<PageFrameItem> itemList) {
+    public final void addItemList(int index, @NonNull List<PageFrameItem> itemList) {
+        if (index < 0) {
+            index = 0;
+        } else if (index > mItems.size()) {
+            index = mItems.size();
+        }
         mItems.addAll(index, itemList);
         for (ItemListChangeListener listener : mItemListChangeListenerSet) {
             listener.onItemRangeInsert(index, itemList.size());
         }
     }
 
-    public void removeItem(@NonNull PageFrameItem item) {
+    public final void removeItem(@NonNull PageFrameItem item) {
         final int index = mItems.indexOf(item);
-        if (index >= 0) {
-            removeItem(index);
-        }
+        removeItem(index);
     }
 
-    public void removeItem(int index) {
+    public final void removeItem(int index) {
         removeItem(index, 1);
     }
 
-    public void removeItem(int index, int itemCount) {
-        if (index < 0 || index >= mItems.size()) {
+    public final void removeItem(int index, int itemCount) {
+        if (index < 0 || index >= mItems.size() || itemCount < 0) {
             throw new IndexOutOfBoundsException(
                     "Invalid item index " + index + " itemCount " + itemCount + " items count "
                             + mItems.size());
+        }
+        if (index + itemCount >= mItems.size()) {
+            itemCount = mItems.size() - index;
         }
         List<PageFrameItem> subList = mItems.subList(index, index + itemCount);
         mItems.removeAll(subList);
@@ -102,5 +107,4 @@ public abstract class PageFrameSection {
 
     @NonNull
     protected abstract ViewHolderFactory getViewHolderFactory();
-
 }

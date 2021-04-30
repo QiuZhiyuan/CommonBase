@@ -12,7 +12,7 @@ import com.qiu.base.lib.widget.frame.PageFrameItem;
 import com.qiu.base.lib.widget.frame.PageFrameItemViewHolder;
 import com.qiu.base.sample.R;
 import com.qiu.base.sample.ui.page_frame.event.AddPageFrameItemEvent;
-import com.qiu.base.sample.ui.page_frame.event.RemovePageFrameItemEvent;
+import com.qiu.base.sample.ui.page_frame.event.RemoveItemRangeEvent;
 
 public class SimplePageFrameItemViewHolder extends PageFrameItemViewHolder {
 
@@ -38,7 +38,8 @@ public class SimplePageFrameItemViewHolder extends PageFrameItemViewHolder {
             public boolean onLongClick(View v) {
                 if (mItem instanceof SimplePageFrameItem) {
                     Logger.d("long click:" + ((SimplePageFrameItem) mItem).text);
-                    EventDispatcher.post(new RemovePageFrameItemEvent(mItem));
+//                    EventDispatcher.post(new RemovePageFrameItemEvent(mItem));
+                    EventDispatcher.post(new RemoveItemRangeEvent(getAdapterPosition(), 3));
                 }
                 return true;
             }
