@@ -12,7 +12,6 @@ import com.qiu.base.lib.utils.CollectionUtils;
 import com.qiu.base.lib.widget.frame.PageFrameItem;
 import com.qiu.base.lib.widget.frame.PageFrameItemViewHolder;
 import com.qiu.base.sample.R;
-import com.qiu.base.sample.ui.page_frame.event.AddItemListEvent;
 import com.qiu.base.sample.ui.page_frame.event.RemoveItemRangeEvent;
 import com.qiu.base.sample.ui.page_frame.event.UpdateItemListEvent;
 

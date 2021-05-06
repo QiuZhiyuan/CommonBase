@@ -12,7 +12,7 @@ import com.qiu.base.lib.utils.App;
 public abstract class ViewHolderFactory {
 
     @NonNull
-    public View findLayoutById(@LayoutRes int layoutId, @NonNull ViewGroup parent) {
+    public static View findLayoutById(@LayoutRes int layoutId, @NonNull ViewGroup parent) {
         return App.i().getLayoutInflater().inflate(layoutId, parent, false);
     }
 

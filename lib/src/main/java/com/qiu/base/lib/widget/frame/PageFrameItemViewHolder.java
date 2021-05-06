@@ -2,6 +2,7 @@ package com.qiu.base.lib.widget.frame;
 
 import android.view.View;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
