@@ -40,6 +40,12 @@ public class AIDLService extends Service {
         public List<String> getNameList() {
             return mNameList;
         }
+
+        @NonNull
+        @Override
+        public String getThreadPid() {
+            return String.valueOf(UtilTools.getPid());
+        }
     };
 
     @Nullable

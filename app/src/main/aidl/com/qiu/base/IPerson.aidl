@@ -7,4 +7,5 @@ interface IPerson {
     void setName(String s);
     String getName();
     List<String> getNameList();
+    String getThreadPid();
 }

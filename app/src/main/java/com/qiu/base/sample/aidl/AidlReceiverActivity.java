@@ -113,7 +113,7 @@ public class AidlReceiverActivity extends CommonLoggerActivity {
     private void printNameList() {
         if (mIPerson != null) {
             try {
-                addLog("Get all name:" + mIPerson.getNameList());
+                addLog("Get all name:" + mIPerson.getNameList() + " " + mIPerson.getThreadPid());
             } catch (RemoteException e) {
                 e.printStackTrace();
                 addLog(e.toString());
