@@ -57,13 +57,19 @@ public class AidlReceiverActivity extends CommonLoggerActivity {
         entryList.add(new BtnEntry("Set Name", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setName("name Id : " + mSetNameCount++);
+                setName("NameId: " + mSetNameCount++);
             }
         }));
         entryList.add(new BtnEntry("Get Name", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 printName();
+            }
+        }));
+        entryList.add(new BtnEntry("Get All Name", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                printNameList();
             }
         }));
 
@@ -97,6 +103,17 @@ public class AidlReceiverActivity extends CommonLoggerActivity {
         if (mIPerson != null) {
             try {
                 addLog("Get name:" + mIPerson.getName());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+                addLog(e.toString());
+            }
+        }
+    }
+
+    private void printNameList() {
+        if (mIPerson != null) {
+            try {
+                addLog("Get all name:" + mIPerson.getNameList());
             } catch (RemoteException e) {
                 e.printStackTrace();
                 addLog(e.toString());

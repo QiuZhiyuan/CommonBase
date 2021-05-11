@@ -6,4 +6,5 @@ package com.qiu.base;
 interface IPerson {
     void setName(String s);
     String getName();
+    List<String> getNameList();
 }

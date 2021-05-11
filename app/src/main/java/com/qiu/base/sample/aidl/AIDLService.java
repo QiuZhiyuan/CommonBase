@@ -11,20 +11,34 @@ import androidx.annotation.Nullable;
 import com.qiu.base.IPerson;
 import com.qiu.base.lib.tools.UtilTools;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AIDLService extends Service {
 
     private String name = "qiuzhiyuan";
 
     @NonNull
     private final Binder binder = new IPerson.Stub() {
+
+        @NonNull
+        private final List<String> mNameList = new ArrayList<>();
+
         @Override
         public void setName(String s) {
             name = s;
+            mNameList.add(s);
         }
 
         @Override
         public String getName() {
             return name + " Pid : " + UtilTools.getPid();
+        }
+
+        @NonNull
+        @Override
+        public List<String> getNameList() {
+            return mNameList;
         }
     };
 
