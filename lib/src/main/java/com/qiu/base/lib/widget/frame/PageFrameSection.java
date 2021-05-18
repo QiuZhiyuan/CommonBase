@@ -1,6 +1,7 @@
 package com.qiu.base.lib.widget.frame;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.qiu.base.lib.utils.CollectionUtils;
 
@@ -11,6 +12,11 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class PageFrameSection {
+
+    public interface Filter<T> {
+
+        abstract boolean isHit(T t);
+    }
 
     @NonNull
     private final List<PageFrameItem> mItems = new ArrayList<>();
@@ -26,6 +32,14 @@ public abstract class PageFrameSection {
         if (index < 0 || index >= mItems.size()) {
             throw new IndexOutOfBoundsException(
                     "Invalid item index " + index + " items count " + mItems.size());
+        }
+        return mItems.get(index);
+    }
+
+    @Nullable
+    public PageFrameItem getItemAllowNull(int index) {
+        if (index < 0 || index >= mItems.size()) {
+            return null;
         }
         return mItems.get(index);
     }
@@ -120,6 +134,17 @@ public abstract class PageFrameSection {
 
     public int getItemListSize() {
         return mItems.size();
+    }
+
+    public void removeByFilter(@NonNull Filter<PageFrameItem> itemFilter) {
+        final List<PageFrameItem> remove = new ArrayList<>();
+        for (PageFrameItem item : mItems) {
+            if (itemFilter.isHit(item)) {
+                remove.add(item);
+            }
+        }
+        mItems.removeAll(remove);
+        callItemListChanged();
     }
 
     @NonNull

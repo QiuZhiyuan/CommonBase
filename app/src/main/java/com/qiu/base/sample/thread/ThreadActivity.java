@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.qiu.base.lib.thread.ThreadUtils;
 import com.qiu.base.lib.widget.frame.PageFrameItem;
 import com.qiu.base.lib.widget.frame.ViewUtils;
 import com.qiu.base.sample.R;
@@ -21,6 +22,8 @@ public class ThreadActivity extends Activity {
 
     @Nullable
     private TextView mLogContent;
+    @NonNull
+    private final MainIndexSection mSection = new MainIndexSection(null);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,17 +32,23 @@ public class ThreadActivity extends Activity {
         mLogContent = findViewById(R.id.log_content);
         final RecyclerView recyclerView = findViewById(R.id.button_container);
         final List<PageFrameItem> itemList = new ArrayList<>();
+        itemList.add(new ButtonItem("Clear Log", v -> mSection.clearLog()));
         itemList.add(new ButtonItem("Create Thread", v -> createThread()));
-        ViewUtils.initLinearRecyclerView(recyclerView, new MainIndexSection(itemList));
+        mSection.addItemList(itemList);
+        ViewUtils.initLinearRecyclerView(recyclerView, mSection);
     }
 
     private void createThread() {
         showLog("create thread");
+        final ThreadLocal<String> strThreadLocal = new ThreadLocal<>();
+        strThreadLocal.set("Hello World");
+        showLog(strThreadLocal.get());
+        new Thread(() -> showLog(strThreadLocal.get())).start();
     }
 
     private void showLog(@NonNull String log) {
-        if (mLogContent != null) {
-            mLogContent.setText(log);
-        }
+        ThreadUtils.i().postMain(() -> {
+            mSection.addLog(log);
+        });
     }
 }
