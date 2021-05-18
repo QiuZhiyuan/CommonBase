@@ -13,8 +13,9 @@ public class GuidePageItem extends ButtonItem {
 
     public GuidePageItem(@NonNull String buttonTitle,
             @NonNull Class<? extends Activity> targetActivity) {
-        super(buttonTitle, v -> App.i().getApplicationContext()
-                .startActivity(new Intent(App.i().getApplicationContext(), targetActivity)));
+        super(buttonTitle, v -> App.i().getApplicationContext().startActivity(
+                new Intent(App.i().getApplicationContext(), targetActivity)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)));
     }
 
     @Override
