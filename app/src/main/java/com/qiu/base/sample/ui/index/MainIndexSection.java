@@ -15,8 +15,8 @@ import com.qiu.base.lib.widget.frame.PageFrameItem;
 import com.qiu.base.lib.widget.frame.PageFrameItemViewHolder;
 import com.qiu.base.lib.widget.frame.PageFrameSection;
 import com.qiu.base.lib.widget.frame.ViewHolderFactory;
-import com.qiu.base.sample.R;
 import com.qiu.base.sample.aidl.AidlReceiverActivity;
+import com.qiu.base.sample.thread.ThreadActivity;
 import com.qiu.base.sample.ui.DataBaseActivity;
 import com.qiu.base.sample.ui.GalleryActivity;
 import com.qiu.base.sample.ui.KeepAliveActivity;
@@ -99,6 +99,7 @@ public class MainIndexSection extends PageFrameSection {
         super();
         final List<PageFrameItem> itemList = new ArrayList<>();
         itemList.add(new IndexItem("test", PageFrameActivity.class));
+        itemList.add(new IndexItem("Thread Page", ThreadActivity.class));
         itemList.add(new IndexItem("Show Gallery", GalleryActivity.class));
         itemList.add(new IndexItem("Show Article Feed", ArticleFeedActivity.class));
         itemList.add(new IndexItem("Show Keep Alive", KeepAliveActivity.class));
