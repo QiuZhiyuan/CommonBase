@@ -2,56 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/index_button_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/show_test_page"
-            style="@style/BaseIndexButton"
-            android:text="@string/test" />
-
-        <Button
-            android:id="@+id/show_gallery"
-            style="@style/BaseIndexButton"
-            android:text="@string/show_gallery" />
-
-        <Button
-            android:id="@+id/show_article_feed"
-            style="@style/BaseIndexButton"
-            android:text="@string/show_article_feed" />
-
-        <Button
-            android:id="@+id/show_keep_alive"
-            style="@style/BaseIndexButton"
-            android:text="@string/show_keep_alive" />
-
-        <Button
-            android:id="@+id/show_system_state_listener"
-            style="@style/BaseIndexButton"
-            android:text="@string/show_system_state_listener" />
-
-        <Button
-            android:id="@+id/show_aidl_receiver"
-            style="@style/BaseIndexButton"
-            android:text="@string/show_aidl_receiver" />
-
-        <Button
-            android:id="@+id/show_database"
-            style="@style/BaseIndexButton"
-            android:text="@string/show_database" />
-
-        <Button
-            android:id="@+id/show_net"
-            style="@style/BaseIndexButton"
-            android:text="@string/show_network" />
-
-        <Button
-            android:id="@+id/show_setting"
-            style="@style/BaseIndexButton"
-            android:text="@string/show_setting" />
-    </LinearLayout>
+        android:layout_height="wrap_content" />
 </ScrollView>
