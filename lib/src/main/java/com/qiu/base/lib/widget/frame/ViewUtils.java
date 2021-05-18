@@ -9,6 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ViewUtils {
 
     public static void initLinearRecyclerView(@NonNull RecyclerView recyclerView,
+            @NonNull PageFrameSection section) {
+        initLinearRecyclerView(recyclerView, section, RecyclerView.VERTICAL);
+    }
+
+    public static void initLinearRecyclerView(@NonNull RecyclerView recyclerView,
             @NonNull PageFrameSection section, @RecyclerView.Orientation int orientation) {
         final PageFrameAdapter adapter = new PageFrameAdapter(section);
         final LinearLayoutManager layoutManager =
