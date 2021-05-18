@@ -21,13 +21,19 @@ public class LogItemViewHolder extends PageFrameItemViewHolder {
 
     @Override
     protected void onBind(@NonNull PageFrameItem item) {
-        if (item instanceof LogItem) {
-            mLogContent.setText(((LogItem) item).logContent);
-        }
+        onDataUpdate(item);
+
     }
 
     @Override
     protected void onUnbind(@Nullable PageFrameItem item) {
 
+    }
+
+    @Override
+    protected void refreshView(@NonNull PageFrameItem item) {
+        if (item instanceof LogItem) {
+            mLogContent.setText(((LogItem) item).logContent);
+        }
     }
 }

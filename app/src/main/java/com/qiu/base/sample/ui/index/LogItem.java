@@ -10,7 +10,7 @@ public class LogItem extends PageFrameItem {
     public static final int ID = UniqueId.get();
 
     @NonNull
-    public final String logContent;
+    public String logContent;
 
     public LogItem(@NonNull String logContent) {
         this.logContent = logContent;

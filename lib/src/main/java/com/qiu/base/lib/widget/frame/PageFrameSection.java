@@ -126,6 +126,10 @@ public abstract class PageFrameSection {
         }
     }
 
+    public boolean contain(@Nullable PageFrameItem item) {
+        return item != null && mItems.contains(item);
+    }
+
     public void callItemListChanged() {
         for (ItemListChangeObserver observer : mItemListChangeObserverSet) {
             observer.onItemListSync();

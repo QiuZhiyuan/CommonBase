@@ -2,10 +2,13 @@ package com.qiu.base.lib.widget.frame;
 
 import android.view.View;
 
-import androidx.annotation.IdRes;
+import androidx.annotation.AnyThread;
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.qiu.base.lib.thread.ThreadUtils;
 
 public abstract class PageFrameItemViewHolder extends RecyclerView.ViewHolder
         implements PageFrameItem.DataUpdateListener {
@@ -39,8 +42,15 @@ public abstract class PageFrameItemViewHolder extends RecyclerView.ViewHolder
     final void detachedFromWindow() {
     }
 
+    @AnyThread
     @Override
-    public void onDataUpdate(@NonNull PageFrameItem item) {
+    public final void onDataUpdate(@NonNull PageFrameItem item) {
+        ThreadUtils.i().postMain(() -> refreshView(item));
+    }
+
+    @MainThread
+    protected void refreshView(@NonNull PageFrameItem item) {
+
     }
 
     protected abstract void onBind(@NonNull PageFrameItem item);

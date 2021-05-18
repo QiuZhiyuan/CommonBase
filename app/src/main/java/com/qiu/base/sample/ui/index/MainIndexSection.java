@@ -28,11 +28,15 @@ public class MainIndexSection extends PageFrameSection {
     }
 
     public void addLog(@NonNull String logContent) {
+        addLog(new LogItem(logContent));
+    }
+
+    public void addLog(@NonNull LogItem item) {
         int index = 0;
         while (!(getItemAllowNull(index) instanceof LogItem) && getItemAllowNull(index) != null) {
             index++;
         }
-        addItem(index, new LogItem(logContent));
+        addItem(index, item);
     }
 
     public void clearLog() {
