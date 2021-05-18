@@ -8,4 +8,5 @@ interface IPerson {
     String getName();
     List<String> getNameList();
     String getThreadPid();
+    void setIBinder(IBinder iBinder);
 }

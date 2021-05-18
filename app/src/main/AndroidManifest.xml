@@ -30,7 +30,12 @@
 
         <service
             android:name=".aidl.AIDLService"
-            android:process="com.qiu.aidl.service" />
+            android:exported="true"
+            android:process="com.qiu.aidl.service">
+            <intent-filter>
+                <action android:name="qiu.aidl.service" />
+            </intent-filter>
+        </service>
         <service android:name=".ui.ForegroundService" />
 
         <receiver android:name=".test.MyAppWidget">

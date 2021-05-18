@@ -95,6 +95,8 @@ public class AidlReceiverActivity extends CommonLoggerActivity {
 
     private void bindAidlService() {
         addLog("bindAidlService");
+//        final Intent intent = new Intent("qiu.aidl.service");
+//        intent.setPackage("com.qiu.base.sample");
         final Intent intent = new Intent(this, AIDLService.class);
         bindService(intent, mServiceConnection, BIND_AUTO_CREATE);
     }
