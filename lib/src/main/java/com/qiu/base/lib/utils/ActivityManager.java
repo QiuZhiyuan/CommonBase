@@ -77,4 +77,16 @@ public class ActivityManager implements Application.ActivityLifecycleCallbacks {
             App.i().getApplicationContext().startActivity(intent);
         }
     }
+
+    public void startActivity(@NonNull Class<? extends Activity> targetClz) {
+        final Activity activity = getActiveActivity();
+        if (activity != null) {
+            final Intent intent = new Intent(activity, targetClz);
+            activity.startActivity(intent);
+        } else {
+            App.i().getApplicationContext().startActivity(
+                    new Intent(App.i().getApplicationContext(), targetClz)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        }
+    }
 }

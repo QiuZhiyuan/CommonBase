@@ -3,6 +3,7 @@
     android:id="@+id/index_button"
     style="@style/BaseIndexButton"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:textColor="@color/black_70">
 
 </Button>

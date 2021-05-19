@@ -1,22 +1,19 @@
 package com.qiu.base.lib.utils;
 
-import android.app.AppOpsManager;
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Point;
-import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 
@@ -112,6 +109,10 @@ public class App {
 
     public void startActivity(@NonNull Intent intent) {
         mActivityManager.startActivity(intent);
+    }
+
+    public void startActivity(@NonNull Class<? extends Activity> activityClz) {
+        mActivityManager.startActivity(activityClz);
     }
 
     @NonNull

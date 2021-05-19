@@ -8,7 +8,7 @@ public abstract class PageFrameItem {
 
     public interface DataUpdateListener {
         @AnyThread
-        public void onDataUpdate(@NonNull PageFrameItem item);
+        void onDataUpdate(@NonNull PageFrameItem item);
     }
 
     @Nullable
@@ -33,6 +33,11 @@ public abstract class PageFrameItem {
         mBindCount--;
     }
 
+    /**
+     * Bind state may update after parent view layout
+     *
+     * @return whether item bind by view holder
+     */
     public boolean isBind() {
         return mBindCount > 0;
     }
