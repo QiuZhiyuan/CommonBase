@@ -21,23 +21,14 @@
         <activity android:name=".ui.article.ArticleFeedActivity" />
         <activity android:name=".ui.KeepAliveActivity" />
         <activity android:name=".ui.SystemStateActivity" />
-        <activity android:name=".aidl.AidlReceiverActivity" />
+        <activity android:name=".binder.AidlReceiverActivity" />
         <activity android:name=".editable.EditableActivity" />
         <activity android:name=".ui.DataBaseActivity" />
         <activity android:name=".ui.NetworkActivity" />
         <activity android:name=".ui.SettingActivity" />
         <activity android:name=".ui.PageFrameActivity" />
         <activity android:name=".thread.ThreadActivity" />
-
-        <service
-            android:name=".aidl.AIDLService"
-            android:exported="true"
-            android:process="com.qiu.aidl.service">
-            <intent-filter>
-                <action android:name="qiu.aidl.service" />
-            </intent-filter>
-        </service>
-        <service android:name=".ui.ForegroundService" />
+        <activity android:name=".image.ImageLoaderActivity" />
 
         <receiver android:name=".test.MyAppWidget">
             <intent-filter>
@@ -48,5 +39,20 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/app_widget_provider" />
         </receiver>
+
+        <service
+            android:name=".binder.AIDLService"
+            android:exported="true"
+            android:process="com.qiu.aidl.service">
+            <intent-filter>
+                <action android:name="qiu.aidl.service" />
+            </intent-filter>
+        </service>
+
+        <service android:name=".ui.ForegroundService" />
     </application>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 </manifest>

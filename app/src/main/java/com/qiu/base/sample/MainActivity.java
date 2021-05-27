@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.qiu.base.lib.widget.frame.PageFrameItem;
 import com.qiu.base.lib.widget.frame.ViewUtils;
-import com.qiu.base.sample.aidl.AidlReceiverActivity;
+import com.qiu.base.sample.binder.AidlReceiverActivity;
+import com.qiu.base.sample.image.ImageLoaderActivity;
 import com.qiu.base.sample.thread.ThreadActivity;
 import com.qiu.base.sample.ui.DataBaseActivity;
 import com.qiu.base.sample.ui.GalleryActivity;
@@ -33,6 +34,7 @@ public class MainActivity extends Activity {
 
         final List<PageFrameItem> itemList = new ArrayList<>();
         itemList.add(new GuidePageItem("test", PageFrameActivity.class));
+        itemList.add(new GuidePageItem("Image Loader", ImageLoaderActivity.class));
         itemList.add(new GuidePageItem("Thread Page", ThreadActivity.class));
         itemList.add(new GuidePageItem("Show Gallery", GalleryActivity.class));
         itemList.add(new GuidePageItem("Show Article Feed", ArticleFeedActivity.class));
