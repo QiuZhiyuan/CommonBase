@@ -44,8 +44,13 @@ public abstract class PageFrameItemViewHolder extends RecyclerView.ViewHolder
 
     @AnyThread
     @Override
-    public final void onDataUpdate(@NonNull PageFrameItem item) {
-        ThreadUtils.i().postMain(() -> refreshView(item));
+    public final void onDataUpdate(@NonNull final PageFrameItem item) {
+        ThreadUtils.i().postMain(new Runnable() {
+            @Override
+            public void run() {
+                refreshView(item);
+            }
+        });
     }
 
     @MainThread
